@@ -4,7 +4,6 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-
     <div class="wrapper">
 
         <RouterLink to="/">Home</RouterLink>
