@@ -2,8 +2,9 @@
   <header>
     <div class="logo">
       <h1>Байтики</h1>
-      <img src="../assets/header/Blogo.svg" />
+      <img src="../assets/header/Blogo.svg" alt="logo" />
     </div>
+    <img src="../assets/header/профиль.svg" alt="user" />
   </header>
 </template>
 
