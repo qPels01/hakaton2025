@@ -1,51 +1,55 @@
 <template>
   <div class="user-data-block">
-    <div class="user-info">
-      <h1>Имя пользователя: Иван Иванов Иванович</h1>
-      <h1>Email: example@mail.com</h1>
+    <div class="user-info" v-if="userInfo">
+      <h1>Имя пользователя: {{ userInfo.username }}</h1>
+      <h1>Email: {{ userInfo.email }}</h1>
     </div>
-    <div class="admin-panel" v-if="isManager">
+    <div v-else style="color: red;">{{ error }}</div>
+
+    <div class="admin-panel" v-if="userInfo && isManager">
       <button>Посмотреть заявки</button>
       <button>Список команд</button>
       <button>Список разработчиков</button>
     </div>
-    <Diagramm />
+    <Diagramm v-if="userInfo" />
   </div>
 
-  <button @click="toOrderForm">Cделать заказ</button>
-  <button>Выйти</button>
+  <button @click="toOrderForm" v-if="userInfo">Сделать заказ</button>
+  <button @click="logout" v-if="userInfo">Выйти</button>
 </template>
 
 <script>
 import Diagramm from "@/components/Diagramm.vue";
-
-// export default {
-//   name: "user",
-//   components: {
-//     Diagramm,
-//   },
-//   data() {
-//     return {
-//       isManager: true,
-//     };
-//   },
-//   methods: {
-//     toOrderForm() {
-//       this.$router.push("/order");
-//     },
-//   },
-// };
-// </script>
-
 import api from "@/api/axios";
 
 export default {
+  name: "User",
+  components: { Diagramm },
   data() {
-    return { userInfo: null, error: "" };
+    return {
+      userInfo: null,
+      error: ""
+    };
+  },
+  computed: {
+    isManager() {
+      // Типичная структура полей с ролью: user.role === 'manager'
+      return this.userInfo && this.userInfo.role === 'manager';
+    }
+  },
+  methods: {
+    toOrderForm() {
+      this.$router.push("/order");
+    },
+    logout() {
+      // Удаляем токен и редиректим на /login
+      localStorage.removeItem("jwt_token");
+      this.$router.push("/login");
+    }
   },
   async mounted() {
     try {
-      const res = await api.get("/user/protected");
+      const res = await api.get("/user/protected"); // предполагается, что этот роут возвращает { user: { username, email, ... } }
       this.userInfo = res.data.user;
     } catch (err) {
       if (err.response && err.response.status === 401) {
@@ -56,7 +60,10 @@ export default {
       }
     }
   }
-}
+};
+</script>
+
+
 
 <style scoped>
 .user-info {
