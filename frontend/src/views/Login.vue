@@ -1,16 +1,8 @@
 <template>
     <div class="formBox">
         <form>
-            <h1>Регистрация</h1>
+            <h1>Вход</h1>
 
-            <div class="field">
-                <label>Имя пользователя</label>
-                <input type="text" required />
-            </div>
-            <div class="field">
-                <label>Название организации</label>
-                <input type="text" required />
-            </div>
             <div class="field">
                 <label>Email</label>
                 <input type="text" required />
@@ -19,22 +11,15 @@
                 <label>Пароль</label>
                 <input type="password" required />
             </div>
-            <div class="field">
-                <label>Подтвердить пароль</label>
-                <input type="password" required />
-            </div>
 
-            <button>Зарегистрироваться</button>
+            <button>Войти</button>
         </form>
     </div>
 </template>
 
 <script>
 export default {
-    name: "register",
-    data() {
-        return {};
-    },
+    name: "login",
 };
 </script>
 
@@ -88,7 +73,7 @@ button {
     font-size: 25px;
     transition: transform 0.5s ease;
     padding: 20px;
-    margin-top: 10px;
+    margin-top: 6.25rem;
 }
 button:hover {
     background: #497bdf;
