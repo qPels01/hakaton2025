@@ -136,35 +136,7 @@ form {
   border-radius: 20px;
   gap: 20px;
 }
-h1 {
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  font-size: 30px;
-}
-.double-label h1 {
-  color: white;
-  font-weight: normal;
-  text-align: left;
-  font-size: 20px;
-}
-.double-label p {
-  color: #ffffff;
-  font-size: 15px;
-}
-label {
-  color: #ffffff;
-  font-size: 20px;
-}
-input {
-  background: #42464e;
-  border: 1.5px solid #bbbbbb;
-  border-radius: 12px;
-  height: 36px;
-  color: white;
-  font-size: 1.2rem;
-  padding: 4px 12px;
-}
+
 select {
   background: #42464e;
   border: 1.5px solid #bbbbbb;
