@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+// users.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { Team } from './teams.entity';
 import { UserData } from './user_data.entity';
-import { Team } from './team.entity';
 
 @Entity('users')
-export class Users {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   user_id: string;
 
@@ -16,9 +17,10 @@ export class Users {
   @Column()
   password: string;
 
+  @ManyToOne(() => Team, team => team.users, { nullable: true })
+  @JoinColumn({ name: 'team_id' })
+  team: Team;
+
   @OneToOne(() => UserData, userData => userData.user, { cascade: true })
   userData: UserData;
-
-  @ManyToMany(() => Team, team => team.users)
-  teams: Team[];
 }

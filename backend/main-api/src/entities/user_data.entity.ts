@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './user.entity';
+import { User } from './users.entity';
 
 @Entity('user_data')
 export class UserData {
@@ -16,6 +16,6 @@ export class UserData {
   last_name: string;
 
   @OneToOne(() => User, user => user.userData)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: "user_id" })
   user: User;
 }

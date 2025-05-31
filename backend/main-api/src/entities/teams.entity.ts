@@ -1,19 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
-import { User } from './user.entity';
+// teams.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { User } from './users.entity';
 
 @Entity('teams')
-export class Teams {
+export class Team {
   @PrimaryGeneratedColumn('uuid')
   team_id: string;
 
   @Column()
   team_name: string;
 
-  @ManyToMany(() => User, user => user.team)
-  @JoinTable({
-    name: 'team',
-    joinColumn: { name: 'team_id', referencedColumnName: 'team_id' },
-    inverseJoinColumn: { name: 'user_id', referencedColumnName: 'user_id' }
-  })
+  @OneToMany(() => User, user => user.team)
   users: User[];
 }
