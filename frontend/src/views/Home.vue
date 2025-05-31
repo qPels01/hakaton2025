@@ -1,32 +1,44 @@
-<script>
-export default {
-  name: "home",
-  data() {
-    return {
-      isVisible: false,
-    };
-  },
-  mounted() {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          this.isVisible = true;
-          observer.unobserve(this.$el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(this.$el.querySelector(".discription"));
-  },
-  methods: {
-    toRegister() {
-      this.$router.push("/register");
+
+
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const isVisible = ref(false)
+const isAuth = ref(localStorage.getItem('jwt_token') !== null)
+const router = useRouter()
+
+// Следим за изменениями localStorage
+window.addEventListener('storage', () => {
+  isAuth.value = localStorage.getItem('jwt_token') !== null
+})
+
+// Intersection Observer
+onMounted(() => {
+  const discription = document.querySelector('.discription')
+  if (!discription) return
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        isVisible.value = true
+        observer.unobserve(discription)
+      }
     },
-    toLogin() {
-      this.$router.push("/login");
-    },
-  },
-};
+    { threshold: 0.1 }
+  )
+  observer.observe(discription)
+})
+
+function toRegister() {
+  router.push('/register')
+}
+function toLogin() {
+  router.push('/login')
+}
+function toCabinet() {
+  router.push('/user')
+}
 </script>
 
 <template>
@@ -39,33 +51,44 @@ export default {
         </h1>
         <p>Легко, быстро, без проблем</p>
       </div>
-      <button @click="toLogin">Войти</button>
+      <button v-if="!isAuth" @click="toLogin">Войти</button>
+      <button v-else @click="toCabinet">Перейти в личный кабинет</button>
     </section>
     <section class="section-2">
       <div class="discription">
-        <div class="disc-text" :class="{ 'fade-in': true, visible: isVisible }">
+        <div
+          class="disc-text"
+          :class="{ 'fade-in': true, visible: isVisible }"
+        >
           <h1>Скорость</h1>
           <p>
-            У нас большой штат сотрудников, разделённый на множество команд.
-            Поэтому работа будет идти быстро
+            У нас большой штат сотрудников, разделённый на множество команд. Поэтому работа будет идти быстро
           </p>
         </div>
-        <div class="disc-text" :class="{ 'fade-in': true, visible: isVisible }">
+        <div
+          class="disc-text"
+          :class="{ 'fade-in': true, visible: isVisible }"
+        >
           <h1>Качество</h1>
           <p>
-            Наши специалисты обладают огромным опытом, что способствует
-            качественной работе
+            Наши специалисты обладают огромным опытом, что способствует качественной работе
           </p>
         </div>
-        <div class="disc-text" :class="{ 'fade-in': true, visible: isVisible }">
+        <div
+          class="disc-text"
+          :class="{ 'fade-in': true, visible: isVisible }"
+        >
           <h1>Цена-качество</h1>
           <p>
-            Наша организация, гаранитирует вам качественный продукт за
-            соответствующую цену
+            Наша организация, гаранитирует вам качественный продукт за соответствующую цену
           </p>
         </div>
       </div>
-      <div class="register" :class="{ 'fade-in': true, visible: isVisible }">
+      <div
+        v-if="!isAuth"
+        class="register"
+        :class="{ 'fade-in': true, visible: isVisible }"
+      >
         <h1>
           Зарегистрируйтесь, чтобы иметь доступ ко всем <br />
           функциям
