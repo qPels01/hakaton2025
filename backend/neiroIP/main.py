@@ -9,11 +9,9 @@ import json
 from enum import Enum
 import logging
 
-# Настройка логирования
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Import your project management system
 from project_system import ProjectManagementSystem, TaskStatus, ProjectStatus
 
 app = FastAPI(
