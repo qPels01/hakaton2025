@@ -27,10 +27,11 @@ export default {
           "Ошибка входа или соединения с сервером";
       }
     },
+    goToRegister() {
+      this.$router.push("/register");
+    },
   },
 };
-
-
 </script>
 
 <template>
@@ -45,75 +46,43 @@ export default {
         <label>Пароль</label>
         <input type="password" required v-model="password" />
       </div>
-<<<<<<< HEAD
 
-      <button>Войти</button>
-      <button>Зарегистрироваться</button>
-=======
-      <div v-if="error" style="color: red;">{{ error }}</div>
+      <div v-if="error" style="color: red">{{ error }}</div>
       <button type="submit">Войти</button>
->>>>>>> 584efe85db37109f9b710b0d8b79e7513eb02ffa
+      <button @click="goToRegister" type="button">Зарегистрироваться</button>
     </form>
   </div>
 </template>
-
 
 <style scoped>
 form {
   display: flex;
   flex-direction: column;
-  min-width: 300px;
-  max-width: 22%;
-  margin: 30px auto;
+  width: 100%;
+  max-width: 20rem;
+  margin: 2rem auto;
   background: #42464e;
   text-align: left;
-  padding: 30px;
-  border-radius: 20px;
-  gap: 25px;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  gap: 1.75rem;
 }
 h1 {
   text-align: center;
-  color: #ffffff;
-  font-size: 40px;
   font-weight: bold;
-}
-label {
-  color: #979797;
-  display: inline-block;
-  font-size: 1rem;
-  letter-spacing: 1px;
 }
 input {
   background: #42464e;
-  border: 1.5px solid #bbbbbb;
-  border-radius: 12px;
-  height: 36px;
+  border: 0.1rem solid #bbbbbb;
+  border-radius: 0.8rem;
+  height: 2rem;
   color: white;
   font-size: 1.2rem;
-  padding: 4px 12px;
+  padding: 0.2rem 0.5rem;
 }
 .field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-}
-button {
-  align-self: center;
-  text-align: center;
-  width: 75%;
-  height: 15%;
-  background: #548dff;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 25px;
-  transition: transform 0.5s ease;
-  padding: 20px;
-  margin-top: 0.25rem;
-}
-button:hover {
-  background: #497bdf;
-  cursor: pointer;
-  transform: scale(1.1);
+  gap: 0.4rem;
 }
 </style>

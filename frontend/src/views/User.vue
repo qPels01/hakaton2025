@@ -1,109 +1,82 @@
 <template>
-  <div class="user-data-block">
-    <div class="user-info">
-      <h1>Имя пользователя: Иван Иванов Иванович</h1>
-      <h1>Email: example@mail.com</h1>
-    </div>
-    <div class="admin-panel" v-if="isManager">
-      <button>Посмотреть заявки</button>
-      <button>Список разработчиков</button>
-    </div>
-    <Diagramm />
+  <div class="user-info">
+    <h1>Имя пользователя: Иван Иванов Иванович</h1>
   </div>
-
-  <button @click="toOrderForm">Cделать заказ</button>
-  <button>Выйти</button>
+  <div class="admin-panel">
+    <button class="admin-button" v-if="isManager">Посмотреть заявки</button>
+    <button class="admin-button" v-if="isManager">Список разработчиков</button>
+    <button @click="toOrderForm">Cделать заказ</button>
+  </div>
+  <Diagramm />
+  <div class="logout">
+    <h1>Выйти из аккаунта</h1>
+    <button>Выйти</button>
+  </div>
 </template>
 
 <script>
 import Diagramm from "@/components/Diagramm.vue";
 
-// export default {
-//   name: "user",
-//   components: {
-//     Diagramm,
-//   },
-//   data() {
-//     return {
-//       isManager: true,
-//     };
-//   },
-//   methods: {
-//     toOrderForm() {
-//       this.$router.push("/order");
-//     },
-//   },
-// };
-// </script>
-
-import api from "@/api/axios";
-
 export default {
-  data() {
-    return { userInfo: null, error: "" };
+  name: "user",
+  components: {
+    Diagramm,
   },
-  async mounted() {
-    try {
-      const res = await api.get("/user/protected");
-      this.userInfo = res.data.user;
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        localStorage.removeItem("jwt_token");
-        this.$router.push("/login");
-      } else {
-        this.error = "Ошибка получения данных пользователя";
-      }
-    }
-  }
-}
+  data() {
+    return {
+      isManager: true,
+    };
+  },
+  methods: {
+    toOrderForm() {
+      this.$router.push("/order");
+    },
+  },
+};
+</script>
+
+import api from "@/api/axios"; export default { data() { return { userInfo:
+null, error: "" }; }, async mounted() { try { const res = await
+api.get("/user/protected"); this.userInfo = res.data.user; } catch (err) { if
+(err.response && err.response.status === 401) {
+localStorage.removeItem("jwt_token"); this.$router.push("/login"); } else {
+this.error = "Ошибка получения данных пользователя"; } } } }
 
 <style scoped>
 .user-info {
-  background: #42464e;
-  border-radius: 20px;
-  padding: 20px;
-  color: white;
-  margin-bottom: 20px;
-  width: 100%;
-}
-.user-data-block {
-  margin: 40px auto;
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-}
-button {
   display: block;
-  margin: 40px auto;
-  width: 28%;
-  height: 5.625rem;
-  background: #548dff;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 25px;
-  transition: transform 0.5s ease;
-  padding: 20px;
-  margin-top: 6.25rem;
-}
-button:hover {
-  background: #497bdf;
-  cursor: pointer;
-  transform: scale(1.1);
+  background: #42464e;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 80%;
+  margin: 2rem auto;
 }
 .admin-panel {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  background: #42464e;
+  border-radius: 1.5rem;
+  padding: 2rem;
   width: 100%;
+  max-width: 80%;
+  margin: 2rem auto;
+  gap: 2rem;
 }
-.admin-panel button {
-  width: max-content;
-  min-width: 120px;
-  height: 3.5rem;
-  margin: 0 20px 0 0; /* или просто margin: 0 20px 0 0; */
-  padding: 10px 25px;
+.logout {
+  display: flex;
+  align-items: center;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 80%;
+  margin: 2rem auto;
+  gap: 2rem;
 }
-.admin-panel button:last-child {
-  margin-right: 0;
+.logout button {
+  margin: 0 0;
+}
+.admin-button {
+  background: rgb(246, 137, 38);
 }
 </style>

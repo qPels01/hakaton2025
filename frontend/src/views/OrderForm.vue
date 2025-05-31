@@ -4,26 +4,18 @@
 
     <label>Выберите тип проекта </label>
     <select v-model="selected1" required>
-      <option
-        v-for="item in dropdownProjectType"
-        :key="item.value"
-        :value="item.value"
-      >
+      <option v-for="item in dropdownProjectType" :key="item" :value="item">
         {{ item }}
       </option>
     </select>
     <label>Опишите, что должен уметь ваш проект</label>
-    <textarea name="" id=""></textarea>
+    <textarea></textarea>
 
     <h1>Технологический стек</h1>
 
     <label>Выберите backend</label>
     <select v-model="selected2" required>
-      <option
-        v-for="item in dropdawnBackend"
-        :key="item.value"
-        :value="item.value"
-      >
+      <option v-for="item in dropdawnBackend" :key="item" :value="item">
         {{ item }}
       </option>
     </select>
@@ -35,11 +27,7 @@
     </select>
     <label>Выберите frontend</label>
     <select v-model="selected4" required>
-      <option
-        v-for="item in dropdawnFrontEnd"
-        :key="item.value"
-        :value="item.value"
-      >
+      <option v-for="item in dropdawnFrontEnd" :key="item" :value="item">
         {{ item }}
       </option>
     </select>

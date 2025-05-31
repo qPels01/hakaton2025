@@ -42,7 +42,8 @@ export default {
 <template>
   <div class="formBox">
     <form @submit="onSubmit">
-      <!-- поля ввода, как раньше -->
+      <h1>Регистрация</h1>
+
       <div class="field">
         <label>Имя пользователя</label>
         <input type="text" required v-model="username" />
@@ -63,71 +64,32 @@ export default {
         <label>Подтвердить пароль</label>
         <input type="password" required v-model="password2" />
       </div>
-      <div v-if="error" style="color:red;">{{ error }}</div>
-      <div v-if="message" style="color:green;">{{ message }}</div>
+      <div v-if="error" style="color: red">{{ error }}</div>
+      <div v-if="message" style="color: green">{{ message }}</div>
       <button type="submit">Зарегистрироваться</button>
     </form>
   </div>
 </template>
 
-
-
 <style scoped>
 form {
   display: flex;
   flex-direction: column;
-  min-width: 300px;
-  max-width: 22%;
-  margin: 30px auto;
+  width: 100%;
+  max-width: 20rem;
+  margin: 2rem auto;
   background: #42464e;
   text-align: left;
-  padding: 30px;
-  border-radius: 20px;
-  gap: 25px;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  gap: 1.75rem;
 }
 h1 {
   text-align: center;
-  color: #ffffff;
-  font-size: 40px;
-  font-weight: bold;
-}
-label {
-  color: #979797;
-  display: inline-block;
-  font-size: 1rem;
-  letter-spacing: 1px;
-}
-input {
-  background: #42464e;
-  border: 1.5px solid #bbbbbb;
-  border-radius: 12px;
-  height: 36px;
-  color: white;
-  font-size: 1.2rem;
-  padding: 4px 12px;
 }
 .field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-}
-button {
-  align-self: center;
-  text-align: center;
-  width: 75%;
-  height: 15%;
-  background: #548dff;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 20px;
-  transition: transform 0.5s ease;
-  padding: 20px;
-  margin-top: 10px;
-}
-button:hover {
-  background: #497bdf;
-  cursor: pointer;
-  transform: scale(1.1);
+  gap: 0.4rem;
 }
 </style>

@@ -1,31 +1,33 @@
 <template>
-  <div class="gantt-outer">
-    <div class="gantt-scroll">
-      <div class="gantt">
-        <div class="gantt-header">
-          <div class="name-cell"></div>
-          <div v-for="day in allDates" :key="day" class="header-cell">
-            {{ day }}
+  <div class="gantt-container">
+    <div class="gantt-outer">
+      <div class="gantt-scroll">
+        <div class="gantt">
+          <div class="gantt-header">
+            <div class="name-cell"></div>
+            <div v-for="day in allDates" :key="day" class="header-cell">
+              {{ day }}
+            </div>
           </div>
-        </div>
-        <div v-for="team in teams" :key="team.name" class="gantt-row">
-          <div @click="toggleModal()" class="name-cell">
-            {{ team.name }}
-          </div>
-          <div class="row-content">
-            <div
-              v-for="task in team.tasks"
-              :key="task.name"
-              class="task"
-              :style="getTaskStyle(task)"
-            >
-              {{ task.name }}
+          <div v-for="team in teams" :key="team.name" class="gantt-row">
+            <div @click="toggleModal()" class="name-cell">
+              {{ team.name }}
+            </div>
+            <div class="row-content">
+              <div
+                v-for="task in team.tasks"
+                :key="task.name"
+                class="task"
+                :style="getTaskStyle(task)"
+              >
+                {{ task.name }}
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <TeamLog v-if="showModal" @close="showModal = false" />
     </div>
-    <TeamLog v-if="showModal" @close="showModal = false" />
   </div>
 </template>
 
@@ -56,6 +58,17 @@ export default {
               name: "проект x",
               start_date: "2025-05-31T08:36:55.435114",
               end_date: "2025-06-01T20:36:55.435114",
+              color: "#f68926",
+            },
+          ],
+        },
+        {
+          name: "Команда 4",
+          tasks: [
+            {
+              name: "проект x",
+              start_date: "2025-06-05T08:36:55.435114",
+              end_date: "2025-06-07T20:36:55.435114",
               color: "#f68926",
             },
           ],
@@ -122,16 +135,18 @@ export default {
 };
 </script>
 
-<!-- стиль как у тебя, исправлений не требует -->
 <style scoped>
-.gantt-outer {
-  background: #2b2d32;
-  height: max-content;
-  box-sizing: border-box;
+.gantt-container {
+  background: #42464e;
+  border-radius: 1.5rem;
+  padding: 2rem;
   width: 100%;
-  margin: 40px auto;
+  max-width: 80%;
+  margin: 1.5rem auto;
 }
-
+.gantt-outer {
+  height: max-content;
+}
 .gantt-scroll {
   overflow-x: auto;
   background: #43464d;
@@ -139,9 +154,10 @@ export default {
   padding: 8px 0;
 }
 .gantt {
-  min-width: 700px;
+  max-width: 80%;
   min-width: fit-content;
-  padding: 20px;
+  padding: 1, 5rem;
+  margin: 0 auto;
 }
 .gantt-header {
   display: flex;

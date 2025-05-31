@@ -14,3 +14,50 @@ body {
   margin: 0;
   padding: 0;
 }
+
+h1 {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+p {
+  color: #979797;
+  font-size: 1.5rem;
+}
+
+label {
+  color: #979797;
+  display: inline-block;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+input {
+  background: #42464e;
+  border: 0.1rem solid #bbbbbb;
+  border-radius: 0.8rem;
+  height: 2rem;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+}
+
+button {
+  display: block;
+  width: 100%;
+  max-width: 17rem;
+  padding: 1em 0;
+  font-size: 1.2rem;
+  border-radius: 3em;
+  border: none;
+  background: #548dff;
+  color: #fff;
+  margin: 0 auto;
+  transition: transform 0.3s, background 0.3s;
+}
+button:hover {
+  background: #497bdf;
+  cursor: pointer;
+  transform: scale(1.1);
+}
