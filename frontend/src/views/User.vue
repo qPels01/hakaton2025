@@ -43,8 +43,9 @@ export default {
     },
     logout() {
       // Удаляем токен и редиректим на /login
-      localStorage.removeItem("jwt_token");
-      this.$router.push("/login");
+      localStorage.removeItem('jwt_token');
+      window.dispatchEvent(new Event('storage'));
+      this.$router.push('/login');
     }
   },
   async mounted() {
