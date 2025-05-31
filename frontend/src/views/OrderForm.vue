@@ -45,7 +45,7 @@
     </select>
 
     <div id="checkbox">
-      <input type="checkbox" name="" id="" />
+      <input type="checkbox" />
       <p>Я не знаю. Выберите всё за меня</p>
     </div>
 
@@ -126,7 +126,7 @@ form {
   display: flex;
   flex-direction: column;
   margin: 30px auto;
-  width: 60%;
+  width: 50%;
   background: #42464e;
   text-align: left;
   padding: 30px;
@@ -176,7 +176,10 @@ select {
   align-items: center;
   color: #ffffff;
   gap: 5px;
-  font-size: 15px;
+  font-size: 20px;
+}
+#checkbox input {
+  width: 20px;
 }
 button {
   align-self: center;

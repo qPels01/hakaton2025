@@ -13,6 +13,7 @@
       </div>
 
       <button>Войти</button>
+      <button>Зарегистрироваться</button>
     </form>
   </div>
 </template>
@@ -74,7 +75,7 @@ button {
   font-size: 25px;
   transition: transform 0.5s ease;
   padding: 20px;
-  margin-top: 6.25rem;
+  margin-top: 0.25rem;
 }
 button:hover {
   background: #497bdf;

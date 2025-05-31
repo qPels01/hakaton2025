@@ -6,10 +6,8 @@
     </div>
     <div class="admin-panel" v-if="isManager">
       <button>Посмотреть заявки</button>
-      <button>Список команд</button>
       <button>Список разработчиков</button>
     </div>
-    <h1>Данные о заказах</h1>
     <Diagramm />
   </div>
 
@@ -52,10 +50,6 @@ export default {
   display: flex;
   flex-direction: column;
   width: 80%;
-}
-h1 {
-  color: white;
-  text-align: center;
 }
 button {
   display: block;
