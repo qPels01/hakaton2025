@@ -1,6 +1,8 @@
 import requests
 
-URL = "http://localhost:4000/api/chat"
+# URL = "http://localhost:4000/api/chat"
+# URL = "http://95.181.161.227:4000/api/chat"
+URL = "http://5.104.75.180:4000/api/chat"
 
 payload = {
     "messages": [
