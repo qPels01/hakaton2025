@@ -4,6 +4,7 @@ import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import User from "@/views/User.vue";
 import OrderForm from "@/views/OrderForm.vue";
+import TeamLog from "@/views/TeamLog.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: "/order",
       name: "order",
       component: OrderForm,
+    },
+    {
+      path: "/teams",
+      name: "teams",
+      component: TeamLog,
     },
   ],
 });

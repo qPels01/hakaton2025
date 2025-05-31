@@ -10,7 +10,7 @@
             </div>
           </div>
           <div v-for="team in teams" :key="team.name" class="gantt-row">
-            <div @click="toggleModal()" class="name-cell">
+            <div @click="goToTeams" class="name-cell">
               {{ team.name }}
             </div>
             <div class="row-content">
@@ -26,14 +26,11 @@
           </div>
         </div>
       </div>
-      <TeamLog v-if="showModal" @close="showModal = false" />
     </div>
   </div>
 </template>
 
 <script>
-import TeamLog from "./modals/TeamLog.vue";
-
 function genDays(start, end) {
   const arr = [];
   let dt = new Date(start);
@@ -46,10 +43,8 @@ function genDays(start, end) {
 }
 
 export default {
-  components: { TeamLog },
   data() {
     return {
-      showModal: false,
       rawTeams: [
         {
           name: "Команда 1",
@@ -128,8 +123,8 @@ export default {
         background: task.color,
       };
     },
-    toggleModal() {
-      this.showModal = !this.showModal;
+    goToTeams() {
+      this.$router.push("/teams");
     },
   },
 };
