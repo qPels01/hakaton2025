@@ -1,7 +1,7 @@
 import requests
 
 # Базовый URL вашего API
-BASE_URL = 'http://localhost:3000/api'
+BASE_URL = 'http://localhost:3001/api'
 
 # Данные для регистрации
 register_data = {
@@ -29,7 +29,6 @@ if response.status_code == 201:
 else:
     print(f"Ошибка регистрации: {response.status_code}, {response.json()}")
 
-# 2. Авторизация и получение токена
 response = requests.post(f"{BASE_URL}/auth/login", json=login_data)
 
 if response.status_code == 200:
@@ -39,7 +38,6 @@ if response.status_code == 200:
 else:
     print(f"Ошибка авторизации: {response.status_code}, {response.json()}")
 
-# 3. Проверка защищённого маршрута с токеном
 headers = {
     'Authorization': f'Bearer {token}'
 }
