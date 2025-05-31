@@ -1,8 +1,8 @@
 <template>
   <div class="user-data-block">
     <div class="user-info">
-      <h1>Имя пользователя: Иван Иванов Иванович</h1>
-      <h1>Email: example@mail.com</h1>
+      <h1>Имя пользователя: {{ name }}</h1>
+      <h1>Email: {{ email }}</h1>
     </div>
     <div class="admin-panel" v-if="isManager">
       <button>Посмотреть заявки</button>
@@ -28,6 +28,8 @@ export default {
   data() {
     return {
       isManager: true,
+      name: "Иван Иванович",
+      email: "example@mail.com"
     };
   },
   methods: {
