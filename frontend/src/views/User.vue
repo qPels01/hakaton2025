@@ -1,46 +1,65 @@
 <template>
-  <div class="user-info">
-    <h1>Имя пользователя: Иван Иванов Иванович</h1>
+  <div class="user-info" v-if="userInfo">
+    <h1>Имя пользователя: {{ userInfo.username }}</h1>
   </div>
-  <div class="admin-panel">
+  <div class="admin-panel" v-if="userInfo && isManager">
     <button class="admin-button" v-if="isManager">Посмотреть заявки</button>
     <button class="admin-button" v-if="isManager">Список разработчиков</button>
-    <button @click="toOrderForm">Cделать заказ</button>
+    <button @click="toOrderForm" v-if="userInfo">Cделать заказ</button>
   </div>
-  <Diagramm />
+  <Diagramm v-if="userInfo" />
   <div class="logout">
     <h1>Выйти из аккаунта</h1>
-    <button>Выйти</button>
+    <button @click="logout" v-if="userInfo">Выйти</button>
   </div>
 </template>
 
 <script>
 import Diagramm from "@/components/Diagramm.vue";
+import api from "@/api/axios";
 
 export default {
   name: "user",
-  components: {
-    Diagramm,
-  },
+  components: { Diagramm },
   data() {
     return {
-      isManager: true,
+      userInfo: null,
+      error: "",
+      isManager: true
     };
+  },
+  computed: {
+    isManager() {
+      return this.userInfo && this.userInfo.role === 'manager';
+    }
   },
   methods: {
     toOrderForm() {
       this.$router.push("/order");
     },
+    logout() {
+      localStorage.removeItem('jwt_token');
+      window.dispatchEvent(new Event('storage'));
+      this.$router.push('/login');
+    }
   },
+  async mounted() {
+    try {
+      const res = await api.get("/user/protected"); // предполагается, что этот роут возвращает { user: { username, email, ... } }
+      this.userInfo = res.data.user;
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        localStorage.removeItem("jwt_token");
+        this.$router.push("/login");
+      } else {
+        this.error = "Ошибка получения данных пользователя";
+      }
+    }
+  }
 };
 </script>
 
-import api from "@/api/axios"; export default { data() { return { userInfo:
-null, error: "" }; }, async mounted() { try { const res = await
-api.get("/user/protected"); this.userInfo = res.data.user; } catch (err) { if
-(err.response && err.response.status === 401) {
-localStorage.removeItem("jwt_token"); this.$router.push("/login"); } else {
-this.error = "Ошибка получения данных пользователя"; } } } }
+
 
 <style scoped>
 .user-info {
