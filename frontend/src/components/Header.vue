@@ -4,66 +4,37 @@
       <h1>Байтики</h1>
       <img src="../assets/header/Blogo.svg" alt="logo" />
     </div>
-    <div class="user" v-if="loginCheck">
-      <span class="username" v-if="userName">{{ userName }}</span>
-      <img src="../assets/header/профиль.svg" @click="toProfile" alt="user" />
-    </div>
-    <div class="user" v-else>
+    <div class="user">
+      <img
+        src="../assets/header/проекты.svg"
+        alt="projects"
+        v-if="loginCheck"
+      />
       <img src="../assets/header/профиль.svg" @click="toProfile" alt="user" />
     </div>
   </header>
 </template>
 
 <script>
-import { jwtDecode } from "jwt-decode";
 export default {
   name: "header",
   data() {
     return {
       loginCheck: false,
-      userName: "",
     };
   },
-  mounted() {
-    this.refreshUser();
-    window.addEventListener('storage', this.refreshUser);
-  },
-  beforeUnmount() {
-    window.removeEventListener('storage', this.refreshUser);
-  },
   methods: {
-  toProfile() { this.$router.push("/user"); },
-  toHome() { this.$router.push("/"); },
-  refreshUser() {
-    const token = localStorage.getItem("jwt_token");
-    this.loginCheck = !!token;
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        this.userName = decoded.username || decoded.name || decoded.email || '';
-      } catch { this.userName = ""; }
-    } else {
-      this.userName = "";
-    }
-  }
-}
+    toProfile() {
+      this.$router.push("/user");
+    },
+    toHome() {
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 
 <style>
-.username {
-color: #fafafc;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-right: 4px;
-  /* cursor: pointer; */
-  transition: text-decoration 0.2s;
-
-    user-select: none;           /* вот эта строка делает текст невыделяемым */
-  -webkit-user-select: none;   /* для Chrome/Safari */
-  -moz-user-select: none;      /* для Firefox */
-  -ms-user-select: none;       /* для IE/Edge */
-}
 header {
   display: flex;
   flex-direction: row;
@@ -95,8 +66,7 @@ h1 {
 }
 .user {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  gap: 50px;
 }
 .user img {
   height: 2rem;
@@ -105,7 +75,7 @@ h1 {
   transition: transform 0.5s ease;
 }
 .user img:hover {
-  /* transform: scale(1.3); */
+  transform: scale(1.3);
   cursor: pointer;
 }
 </style>

@@ -20,7 +20,6 @@ export default {
           password: this.password,
         });
         localStorage.setItem("jwt_token", res.data.token);
-        window.dispatchEvent(new Event('storage'));
         this.$router.push("/user");
       } catch (err) {
         this.error =

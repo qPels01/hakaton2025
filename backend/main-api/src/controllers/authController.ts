@@ -29,19 +29,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       hash_password: hashedPassword,
       is_admin: false,
     });
-    const token = jwt.sign(
-      { 
-        id: user.id,
-        is_admin: user.is_admin,
-        username: user.username,
-        email: user.email,
-        company_name: user.company_name
-      },
-      process.env.JWT_SECRET || 'secret',
-      { expiresIn: '365d' }
-    );
+
     await userRepo.save(user);
-    res.status(201).json({ message: 'User registered successfully',token });
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Registration failed' });
@@ -76,8 +66,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         id: user.id,
         is_admin: user.is_admin,
         username: user.username,
-        email: user.email,
-        company_name: user.company_name
+        email: user.email
       },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '365d' }

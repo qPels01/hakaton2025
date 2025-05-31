@@ -1,5 +1,5 @@
 <template>
-    <footer>Copyright @ 2025 Байтики core.</footer>
+    <footer>Copyright @ 2025 Байтики corp.</footer>
 </template>
 
 <script>
