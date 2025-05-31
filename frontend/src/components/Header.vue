@@ -10,7 +10,11 @@
                 alt="projects"
                 v-if="loginCheck"
             />
-            <img src="../assets/header/профиль.svg" alt="user" />
+            <img
+                src="../assets/header/профиль.svg"
+                @click="toProfile"
+                alt="user"
+            />
         </div>
     </header>
 </template>
@@ -22,6 +26,11 @@ export default {
         return {
             loginCheck: false,
         };
+    },
+    methods: {
+        toProfile() {
+            this.$router.push("/user");
+        },
     },
 };
 </script>
