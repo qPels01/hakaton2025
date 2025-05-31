@@ -1,40 +1,44 @@
 
+
 <script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const isVisible = ref(false)
 const isAuth = ref(localStorage.getItem('jwt_token') !== null)
+const router = useRouter()
+
+// Следим за изменениями localStorage
 window.addEventListener('storage', () => {
   isAuth.value = localStorage.getItem('jwt_token') !== null
 })
-export default {
-  name: "home",
-  data() {
-    return {
-      isVisible: false,
-    };
-  },
-  mounted() {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          this.isVisible = true;
-          observer.unobserve(this.$el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(this.$el.querySelector(".discription"));
-  },
-  methods: {
-    toRegister() {
-      this.$router.push("/register");
+
+// Intersection Observer
+onMounted(() => {
+  const discription = document.querySelector('.discription')
+  if (!discription) return
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        isVisible.value = true
+        observer.unobserve(discription)
+      }
     },
-    toLogin() {
-      this.$router.push("/login");
-    },
-    function toCabinet() {
-  this.$router.push('/user')
+    { threshold: 0.1 }
+  )
+  observer.observe(discription)
+})
+
+function toRegister() {
+  router.push('/register')
 }
-  },
-};
+function toLogin() {
+  router.push('/login')
+}
+function toCabinet() {
+  router.push('/user')
+}
 </script>
 
 <template>

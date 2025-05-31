@@ -14,23 +14,30 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Diagramm from "@/components/Diagramm.vue";
 import api from "@/api/axios";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+  username: string;
+  email: string;
+  is_admin?: boolean;
+  [key: string]: any;
+}
 
 export default {
   name: "user",
   components: { Diagramm },
   data() {
     return {
-      userInfo: null,
-      error: "",
-      isManager: true
+      userInfo: null as DecodedToken | null,
+      error: ""
     };
   },
   computed: {
-    isManager() {
-      return this.userInfo && this.userInfo.role === 'manager';
+    isManager(): boolean {
+      return !(!!(this.userInfo && this.userInfo.is_admin));
     }
   },
   methods: {
@@ -41,12 +48,34 @@ export default {
       localStorage.removeItem('jwt_token');
       window.dispatchEvent(new Event('storage'));
       this.$router.push('/login');
+    },
+    getUserFromToken() {
+      const token = localStorage.getItem('jwt_token');
+      if (!token) return null;
+      try {
+        // Используем jwt-decode для декодирования payload токена
+        return jwtDecode<DecodedToken>(token);
+      } catch (e) {
+        // Если токен битый — удаляем, редиректим на логин
+        localStorage.removeItem('jwt_token');
+        this.$router.push('/login');
+        return null;
+      }
     }
   },
   async mounted() {
+    this.userInfo = this.getUserFromToken();
+    if (!this.userInfo) {
+      this.$router.push('/login');
+      return;
+    }
+    // Валидация токена на сервере (например, если токен отозван)
     try {
-      const res = await api.get("/user/protected"); // предполагается, что этот роут возвращает { user: { username, email, ... } }
-      this.userInfo = res.data.user;
+      const res = await api.get("/user/protected");
+      if(res.data.user) {
+        // Можно профрешить userInfo — например, если на сервере данные изменились.
+        this.userInfo = { ...this.userInfo, ...res.data.user };
+      }
     } catch (err) {
       if (err.response && err.response.status === 401) {
         localStorage.removeItem("jwt_token");
