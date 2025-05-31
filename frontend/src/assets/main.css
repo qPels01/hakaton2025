@@ -53,3 +53,22 @@ input {
   font-size: 22px;
   font-weight: 500;
 }
+button {
+  align-self: center;
+  text-align: center;
+  width: 50%;
+  height: 15%;
+  background: #548dff;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 25px;
+  transition: transform 0.5s ease;
+  padding: 20px;
+  margin: 2.25rem;
+}
+button:hover {
+  background: #497bdf;
+  cursor: pointer;
+  transform: scale(1.1);
+}

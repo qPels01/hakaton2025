@@ -61,6 +61,8 @@
       <label class="subtitle" id="project">Подобранная команда</label>
       <label class="label">{{ "(" + team + "):" }}</label>
     </div>
+    <button id="accept">Подтвердить выбор ИИ</button>
+    <button id="recalc">Перерасчитать</button>
   </div>
 </template>
 
@@ -100,7 +102,9 @@ export default {
     padding: 0 90px 40px 90px;
     gap: 20px;
   }
-  
+  #accept{
+    margin: 0;
+  }
   ul{
     color: white;
     margin: 0;
@@ -111,5 +115,9 @@ export default {
   #project{
     margin-right: 15px;
     margin-bottom: 32px;
+  }
+  #recalc{
+    background: #889DC7;
+    margin: 0;
   }
 </style>
