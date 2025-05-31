@@ -18,8 +18,10 @@ export async function askChatGPT(messages: any[], apiKey: string) {
                 timeout: 10000,
             }
         );
+        console.log(response.data);
         return response.data;
     } catch (error: any) {
+        console.log(error.response?.data || { message: error.message });
         throw error.response?.data || { message: error.message };
     }
 }

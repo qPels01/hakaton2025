@@ -1,28 +1,62 @@
+<script>
+import api from "@/api/axios";
+
+export default {
+  name: "login",
+  data() {
+    return {
+      username: "",
+      password: "",
+      error: "",
+    };
+  },
+  methods: {
+    async onSubmit(e) {
+      e.preventDefault();
+      this.error = "";
+      try {
+        const res = await api.post("/auth/login", {
+          username: this.username,
+          password: this.password,
+        });
+        localStorage.setItem("jwt_token", res.data.token);
+        this.$router.push("/user");
+      } catch (err) {
+        this.error =
+          err.response?.data?.message ||
+          "Ошибка входа или соединения с сервером";
+      }
+    },
+  },
+};
+
+
+</script>
+
 <template>
   <div class="formBox">
-    <form>
+    <form @submit="onSubmit">
       <h1>Вход</h1>
-
       <div class="field">
-        <label>Email</label>
-        <input type="text" required />
+        <label>Имя пользователя</label>
+        <input type="text" required v-model="username" />
       </div>
       <div class="field">
         <label>Пароль</label>
-        <input type="password" required />
+        <input type="password" required v-model="password" />
       </div>
+<<<<<<< HEAD
 
       <button>Войти</button>
       <button>Зарегистрироваться</button>
+=======
+      <div v-if="error" style="color: red;">{{ error }}</div>
+      <button type="submit">Войти</button>
+>>>>>>> 584efe85db37109f9b710b0d8b79e7513eb02ffa
     </form>
   </div>
 </template>
 
-<script>
-export default {
-  name: "login",
-};
-</script>
 
 <style scoped>
 form {

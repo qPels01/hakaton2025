@@ -18,23 +18,44 @@
 <script>
 import Diagramm from "@/components/Diagramm.vue";
 
+// export default {
+//   name: "user",
+//   components: {
+//     Diagramm,
+//   },
+//   data() {
+//     return {
+//       isManager: true,
+//     };
+//   },
+//   methods: {
+//     toOrderForm() {
+//       this.$router.push("/order");
+//     },
+//   },
+// };
+// </script>
+
+import api from "@/api/axios";
+
 export default {
-  name: "user",
-  components: {
-    Diagramm,
-  },
   data() {
-    return {
-      isManager: true,
-    };
+    return { userInfo: null, error: "" };
   },
-  methods: {
-    toOrderForm() {
-      this.$router.push("/order");
-    },
-  },
-};
-</script>
+  async mounted() {
+    try {
+      const res = await api.get("/user/protected");
+      this.userInfo = res.data.user;
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        localStorage.removeItem("jwt_token");
+        this.$router.push("/login");
+      } else {
+        this.error = "Ошибка получения данных пользователя";
+      }
+    }
+  }
+}
 
 <style scoped>
 .user-info {
