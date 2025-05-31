@@ -16,9 +16,10 @@ return
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
     req.user = decoded as {
       id: number;
-      is_admin: boolean;
       username: string;
       email: string;
+      company_name: string;
+      is_admin: boolean;
     };
     next();
   } catch {

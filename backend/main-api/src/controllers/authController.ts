@@ -34,7 +34,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         id: user.id,
         is_admin: user.is_admin,
         username: user.username,
-        email: user.email
+        email: user.email,
+        company_name: user.company_name
       },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '365d' }
@@ -75,7 +76,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         id: user.id,
         is_admin: user.is_admin,
         username: user.username,
-        email: user.email
+        email: user.email,
+        company_name: user.company_name
       },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '365d' }
