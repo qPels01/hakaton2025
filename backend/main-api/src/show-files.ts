@@ -1,15 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-// Папки, которые надо игнорировать
 const IGNORE_DIRS = ['node_modules', '.git'];
 
-// Проверка по расширению
 function isTargetFile(filename: string): boolean {
-    return filename.endsWith('.ts') || filename.endsWith('.env');
+    return (filename.endsWith('.ts') || filename.endsWith('.env')) && !filename.includes("show-files.ts");
 }
 
-// Собирает данные по найденным файлам
 function collectFiles(dir: string, output: string[]): void {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
@@ -28,11 +25,9 @@ function collectFiles(dir: string, output: string[]): void {
     }
 }
 
-// Если путь передан в аргументах — используем его, иначе ../ (вышестоящая директория)
 const targetDir = process.argv[2]
     ? path.resolve(process.argv[2])
     : path.resolve(process.cwd(), '..');
-// Имя выходного файла
 const outputFile = 'files-output.txt';
 
 if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
@@ -43,6 +38,5 @@ if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
 const result: string[] = [];
 collectFiles(targetDir, result);
 
-// Сохраняем в файл
 fs.writeFileSync(outputFile, result.join('\n'), 'utf-8');
 console.log(`Операция завершена. Результат сохранён в "${outputFile}"`);

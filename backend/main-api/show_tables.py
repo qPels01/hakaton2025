@@ -1,4 +1,4 @@
-import psycopg2
+import psycopg2 # type: ignore
 
 # Параметры подключения
 conn = psycopg2.connect(
