@@ -21,24 +21,25 @@
     <select v-model="selected2" required>
       <option
         v-for="item in dropdawnBackend"
-        :key="item.value"
-        :value="item.value"
+        :key="item"
+        :value="item"
       >
         {{ item }}
-      </option>
+      </option> 
     </select>
     <label>Выберите базу данных</label>
     <select v-model="selected3" required>
-      <option v-for="item in dropdawnDB" :key="item.value" :value="item.value">
+      <option v-for="item in dropdawnDB" :key="item" :value="item">
         {{ item }}
       </option>
     </select>
     <label>Выберите frontend</label>
+  
     <select v-model="selected4" required>
       <option
         v-for="item in dropdawnFrontEnd"
-        :key="item.value"
-        :value="item.value"
+        :key="item"
+        :value="item"
       >
         {{ item }}
       </option>
@@ -90,7 +91,8 @@ export default {
         "Игра",
       ],
       dropdawnBackend: [
-        "Php (рекомендуется)",
+        "...",
+        "Php",
         "Python",
         "Node.js",
         "Java",
@@ -101,8 +103,9 @@ export default {
         "C#",
         "Без бекенда",
       ],
-      dropdawnDB: ["SQL", "Firebase", "MongoDB", "Redis", "Без базы данных"],
+      dropdawnDB: ["...", "SQL", "Firebase", "MongoDB", "Redis", "Без базы данных"],
       dropdawnFrontEnd: [
+        "...",
         "Html + css + javaScript",
         "Vue",
         "React",
@@ -112,10 +115,10 @@ export default {
         "Flatter",
       ],
 
-      selected1: "a",
-      selected2: "a",
-      selected3: "a",
-      selected4: "a",
+      selected1: "...",
+      selected2: "...",
+      selected3: "...",
+      selected4: "...",
     };
   },
 };
