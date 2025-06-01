@@ -10,12 +10,12 @@
             </div>
           </div>
           <div v-for="team in teams" :key="team.name" class="gantt-row">
-            <div @click="goToTeams" class="name-cell">
+            <div @click="showModal = true" class="name-cell">
               {{ team.name }}
             </div>
             <div class="row-content">
               <div
-                @click="openModal"
+                @click="showModal = true"
                 v-for="task in team.tasks"
                 :key="task.name"
                 class="task"
@@ -29,6 +29,7 @@
       </div>
     </div>
   </div>
+  <Developers v-if="showModal" @close="showModal = false" />
 </template>
 
 <script>
@@ -42,10 +43,13 @@ function genDays(start, end) {
   }
   return arr;
 }
+import Developers from "./modals/Developers.vue";
 
 export default {
+  components: { Developers },
   data() {
     return {
+      showModal: false,
       rawTeams: [
         {
           name: "Команда 1",
@@ -210,8 +214,12 @@ export default {
   z-index: 1;
   white-space: nowrap;
   box-sizing: border-box;
+  transition: transform 0.3s, background 0.3s;
 }
-
+.task:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
 .gantt-scroll::-webkit-scrollbar {
   height: 8px;
   background: #393b40;

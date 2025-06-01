@@ -3,7 +3,9 @@
     <h1>Имя пользователя: Иван Иванов Иванович</h1>
   </div>
   <div class="admin-panel">
-    <button class="admin-button" v-if="isManager">Посмотреть заявки</button>
+    <button @click="toBidList" class="admin-button" v-if="isManager">
+      Посмотреть заявки
+    </button>
     <button @click="toDevList" class="admin-button" v-if="isManager">
       Список разработчиков
     </button>
@@ -34,6 +36,9 @@ export default {
     },
     toDevList() {
       this.$router.push("/devlist");
+    },
+    toBidList() {
+      this.$router.push("/bidlist");
     },
   },
 };

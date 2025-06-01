@@ -9,10 +9,8 @@
         <span>{{ item.role }}</span>
         <span>Стек: {{ item.stack }}</span>
         <span>Команда 1</span>
-        <!-- <button class="teamer-btn">подробнее</button> -->
       </li>
     </ul>
-    <!-- <button>Добавить разработчика</button> -->
   </div>
 </template>
 
