@@ -4,7 +4,9 @@
   </div>
   <div class="admin-panel">
     <button class="admin-button" v-if="isManager">Посмотреть заявки</button>
-    <button class="admin-button" v-if="isManager">Список разработчиков</button>
+    <button @click="toDevList" class="admin-button" v-if="isManager">
+      Список разработчиков
+    </button>
     <button @click="toOrderForm">Cделать заказ</button>
   </div>
   <Diagramm />
@@ -30,16 +32,12 @@ export default {
     toOrderForm() {
       this.$router.push("/order");
     },
+    toDevList() {
+      this.$router.push("/devlist");
+    },
   },
 };
 </script>
-
-import api from "@/api/axios"; export default { data() { return { userInfo:
-null, error: "" }; }, async mounted() { try { const res = await
-api.get("/user/protected"); this.userInfo = res.data.user; } catch (err) { if
-(err.response && err.response.status === 401) {
-localStorage.removeItem("jwt_token"); this.$router.push("/login"); } else {
-this.error = "Ошибка получения данных пользователя"; } } } }
 
 <style scoped>
 .user-info {

@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
-import Register from "@/views/Register.vue";
-import Login from "@/views/Login.vue";
+import Register from "@/views/auth/Register.vue";
+import Login from "@/views/auth/Login.vue";
 import User from "@/views/User.vue";
-import OrderForm from "@/views/OrderForm.vue";
+import OrderForm from "@/views/form/OrderForm.vue";
 import TeamLog from "@/views/TeamLog.vue";
+import Requisition from "@/views/form/Requisition.vue";
+import DevList from "@/views/DevList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +40,16 @@ const router = createRouter({
       path: "/teams",
       name: "teams",
       component: TeamLog,
+    },
+    {
+      path: "/requisition",
+      name: "requisition",
+      component: Requisition,
+    },
+    {
+      path: "/devlist",
+      name: "devlist",
+      component: DevList,
     },
   ],
 });

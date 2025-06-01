@@ -34,7 +34,7 @@
 
     <div id="checkbox">
       <input type="checkbox" />
-      <p>Я не знаю. Выберите всё за меня</p>
+      <p id="checkbox-font">Я не знаю. Выберите всё за меня</p>
     </div>
 
     <div class="double-label">
@@ -113,48 +113,47 @@ export default {
 form {
   display: flex;
   flex-direction: column;
-  margin: 30px auto;
+  margin: 2rem auto;
   width: 50%;
   background: #42464e;
   text-align: left;
-  padding: 30px;
-  border-radius: 20px;
-  gap: 20px;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  gap: 1.25rem;
 }
 h1 {
-  color: white;
-  font-weight: bold;
   text-align: center;
-  font-size: 30px;
 }
-.double-label h1 {
-  color: white;
+.double-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.double-label h1,
+.double-label p {
+  margin: 0;
   font-weight: normal;
   text-align: left;
-  font-size: 20px;
-}
-.double-label p {
-  color: #ffffff;
-  font-size: 15px;
+  font-size: 1.25rem;
 }
 label {
   color: #ffffff;
-  font-size: 20px;
+  font-size: 1.125rem;
 }
 input {
   background: #42464e;
-  border: 1.5px solid #bbbbbb;
-  border-radius: 12px;
-  height: 36px;
+  border: 0.1rem solid #bbbbbb;
+  border-radius: 1.25rem;
+  height: 2rem;
   color: white;
   font-size: 1.2rem;
-  padding: 4px 12px;
+  padding: 0.25rem 1.25rem;
 }
 select {
   background: #42464e;
-  border: 1.5px solid #bbbbbb;
-  border-radius: 12px;
-  height: 36px;
+  border: 0.1rem solid #bbbbbb;
+  border-radius: 2rem;
+  height: 2.2rem;
   color: white;
   font-size: 1.2rem;
   padding: 0 12px;
@@ -163,41 +162,22 @@ select {
   display: flex;
   align-items: center;
   color: #ffffff;
-  gap: 5px;
-  font-size: 20px;
+  gap: 0.3rem;
+  font-size: 1.25rem;
+}
+#checkbox-font {
+  color: #ffffff;
 }
 #checkbox input {
-  width: 20px;
-}
-button {
-  align-self: center;
-  text-align: center;
-  width: 50%;
-  height: 15%;
-  background: #548dff;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 25px;
-  transition: transform 0.5s ease;
-  padding: 20px;
-  margin: 2.25rem;
-}
-button:hover {
-  background: #497bdf;
-  cursor: pointer;
-  transform: scale(1.1);
-}
-option {
-  color: #bbbbbb;
+  width: 1.25rem;
 }
 textarea {
   background: #42464e;
-  border: 1.5px solid #bbbbbb;
-  border-radius: 12px;
+  border: 0.1rem solid #bbbbbb;
+  border-radius: 0.75rem;
   height: 6.25rem;
   color: white;
   font-size: 1.2rem;
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
 }
 </style>
