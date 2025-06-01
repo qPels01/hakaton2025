@@ -32,7 +32,7 @@ export default {
     };
   },  computed: {
     isManager() {
-      return this.userInfo && this.userInfo.role !== 'manager';
+      return this.userInfo && this.userInfo.role === 'manager';
     }
   },
   methods: {

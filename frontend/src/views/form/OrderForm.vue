@@ -1,39 +1,32 @@
 <template>
-  <form>
+  <form @submit.prevent="submitForm">
     <h1>Заявка на создание проекта</h1>
 
     <label>Выберите тип проекта </label>
     <select v-model="selected1" required>
-      <option v-for="item in dropdownProjectType" :key="item" :value="item">
-        {{ item }}
-      </option>
+      <option v-for="item in dropdownProjectType" :key="item" :value="item">{{ item }}</option>
     </select>
+
     <label>Опишите, что должен уметь ваш проект</label>
-    <textarea></textarea>
+    <textarea v-model="projectDescription"></textarea>
 
     <h1>Технологический стек</h1>
 
     <label>Выберите backend</label>
     <select v-model="selected2" required>
-      <option v-for="item in dropdawnBackend" :key="item" :value="item">
-        {{ item }}
-      </option>
+      <option v-for="item in dropdawnBackend" :key="item" :value="item">{{ item }}</option>
     </select>
     <label>Выберите базу данных</label>
     <select v-model="selected3" required>
-      <option v-for="item in dropdawnDB" :key="item.value" :value="item.value">
-        {{ item }}
-      </option>
+      <option v-for="item in dropdawnDB" :key="item" :value="item">{{ item }}</option>
     </select>
     <label>Выберите frontend</label>
     <select v-model="selected4" required>
-      <option v-for="item in dropdawnFrontEnd" :key="item" :value="item">
-        {{ item }}
-      </option>
+      <option v-for="item in dropdawnFrontEnd" :key="item" :value="item">{{ item }}</option>
     </select>
 
     <div id="checkbox">
-      <input type="checkbox" />
+      <input type="checkbox" v-model="chooseForMe" />
       <p id="checkbox-font">Я не знаю. Выберите всё за меня</p>
     </div>
 
@@ -41,23 +34,26 @@
       <h1>Когда вам нужен готовый проект?</h1>
       <p>(можете написать дату или промежуток времени)</p>
     </div>
-    <input type="text" />
+    <input type="text" v-model="deadline" />
+
     <div class="double-label">
       <h1>Если есть что-то, что важно для вашего проекта, опишите здесь</h1>
       <p>(например, интеграция с платежной системой)</p>
     </div>
-    <input type="text" />
+    <input type="text" v-model="importantDetails" />
+
     <div class="double-label">
       <h1>Укажите контактные данные</h1>
       <p>(если не указано, связь будет осуществляться по почте)</p>
     </div>
-    <input type="text" />
+    <input type="text" v-model="contactInfo" />
 
-    <button>Рассчитать</button>
+    <button type="submit">Рассчитать</button>
   </form>
 </template>
 
 <script>
+import api from "@/api/axios";
 export default {
   name: "order",
   data() {
@@ -100,11 +96,48 @@ export default {
         "Flatter",
       ],
 
-      selected1: "a",
-      selected2: "a",
-      selected3: "a",
-      selected4: "a",
+      selected1: "",
+      selected2: "",
+      selected3: "",
+      selected4: "",
+      projectDescription: "",
+      chooseForMe: false,
+      deadline: "",
+      importantDetails: "",
+      contactInfo: "",
     };
+  },
+  methods: {
+    async submitForm(evt) {
+      // evt.preventDefault(); // НЕ нужно, если стоит @submit.prevent в шаблоне
+
+      const data = {
+        title: this.selected1,
+        projectType: this.selected1,
+        projectDescription: this.projectDescription,
+        techStack: {
+          backend: this.selected2,
+          database: this.selected3,
+          frontend: this.selected4,
+          chooseForMe: this.chooseForMe,
+        },
+        deadline: this.deadline,
+        importantDetails: this.importantDetails,
+        contactInfo: this.contactInfo,
+      };
+
+      // Выводим собранные значения в консоль
+      console.log(JSON.stringify(data, null, 2));
+
+      // Можно отправлять запрос:
+      try {
+      console.log("Отправка заявки... ожидание..");
+        const response = await api.post("/process", data);
+        console.log(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
 };
 </script>
