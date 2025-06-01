@@ -1,5 +1,8 @@
 <template>
   <div class="main-container">
+    <div class="nav-btn-container">
+      <button @click="toUser">В профиль</button>
+    </div>
     <div class="head-component">
       <h1>Список разработчиков</h1>
     </div>
@@ -95,10 +98,22 @@ export default {
         : this.teams;
     },
   },
+  methods: {
+    toUser() {
+      this.$router.push("/user");
+    },
+  },
 };
 </script>
 
 <style scoped>
+.nav-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 3rem;
+  margin-bottom: 0;
+}
 .teamer-btn {
   max-width: 10rem;
   padding: 0.5rem;
@@ -121,6 +136,15 @@ li {
   text-align: center;
   margin: 2rem auto;
   border-bottom: 0.1rem solid #969595;
+}
+.navButton {
+  display: flex;
+  justify-content: start;
+}
+button {
+  padding: 1rem;
+  margin: 0;
+  width: 10rem;
 }
 .card-list {
   display: flex;

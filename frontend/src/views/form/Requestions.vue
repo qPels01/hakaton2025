@@ -2,7 +2,6 @@
   <div class="main-container">
     <div class="project-container">
       <h1 id="title">Просмотр заявки</h1>
-
       <div class="container">
         <ul>
           <li>
@@ -25,15 +24,15 @@
         <p class="side-container-desc">{{ query.projectDescription }}</p>
         <ul>
           <li>
-            <h1 class="subtitle" id="project">Бекенд</h1>
+            <h1 class="subtitle">Бекенд</h1>
             <p>{{ tasks.chosenStack.backend }}</p>
           </li>
           <li>
-            <h1 class="subtitle" id="project">Фронтенд</h1>
+            <h1 class="subtitle">Фронтенд</h1>
             <p>{{ tasks.chosenStack.frontend }}</p>
           </li>
           <li>
-            <h1 class="subtitle" id="project">База данных</h1>
+            <h1 class="subtitle">База данных</h1>
             <p>{{ tasks.chosenStack.database }}</p>
           </li>
         </ul>
@@ -53,19 +52,19 @@
         <h1 id="title">Рассчитанные трудозатраты</h1>
         <ul>
           <li>
-            <h1 class="subtitle" id="project">Время на разработку</h1>
+            <h1 class="subtitle">Время на разработку</h1>
             <p>
               {{ tasks.total_estimated_time.toString() + " дней" }}
             </p>
           </li>
           <li>
-            <h1 class="subtitle" id="project">Часов разработки</h1>
+            <h1 class="subtitle">Часов разработки</h1>
             <p>
               {{ tasks.total_estimated_time.toString() + " ч" }}
             </p>
           </li>
           <li>
-            <h1 class="subtitle" id="project">Общая стоимость</h1>
+            <h1 class="subtitle">Общая стоимость</h1>
             <p>{{ spending.total_cost.toLocaleString("ru-Ru") }} ₽</p>
           </li>
         </ul>
@@ -84,7 +83,7 @@
           <ul class="developers">
             <li>
               <div class="about">
-                <h1 class="subtitle noMargin" id="project">{{ dev.name }}</h1>
+                <h1 class="subtitle noMargin">{{ dev.name }}</h1>
                 <p class="with-dot">{{ dev.role }}</p>
                 <p class="with-dot">{{ dev.level }}</p>
                 <p class="with-dot">{{ getStack(dev.skills) }}</p>
@@ -92,11 +91,11 @@
             </li>
             <ul v-for="calc in spending.calculation" :key="calc.id">
               <li v-if="calc.dev_id == index">
-                <p class="subtitle" id="project">Часов разработки</p>
+                <p class="subtitle">Часов разработки</p>
                 <p>{{ calc.hours }}</p>
               </li>
               <li v-if="calc.dev_id == index">
-                <p class="subtitle" id="project">Стоимость работы</p>
+                <p class="subtitle">Стоимость работы</p>
                 <p>{{ calc.cost }}</p>
               </li>
             </ul>
@@ -106,24 +105,25 @@
 
       <div class="container">
         <h1 id="subtitle">Задачи</h1>
-        <li v-for="(task, index) in tasks.tasks" class="tasks">
+        <li v-for="(task, index) in tasks.tasks">
           <ul>
-            <p>{{ index }}</p>
-            <li v-for="rtask in task">
-              <p class="label subtitle">{{ rtask.title }}</p>
-              <br />
-              <p>{{ rtask.description }}</p>
-              <br />
-              <p>
-                {{ "Рассчитанное время: " + rtask.estimated_hours + "ч" }}
-              </p>
+            <li class="tasks-index">{{ index }}</li>
+            <li class="tasks" v-for="rtask in task">
+              <div class="side-container-tasks">
+                <p class="label subtitle">{{ rtask.title }}</p>
+                <p>{{ rtask.description }}</p>
+                <p>
+                  {{ "Рассчитанное время: " + rtask.estimated_hours + "ч" }}
+                </p>
+              </div>
             </li>
           </ul>
         </li>
       </div>
-
-      <button id="accept">Подтвердить выбор ИИ</button>
-      <button id="recalc">Перерасчитать</button>
+      <div class="buttons">
+        <button id="denied">Отклонить</button>
+        <button>Принять</button>
+      </div>
     </div>
   </div>
 </template>
@@ -178,14 +178,7 @@ export default {
           database: "-",
         },
         tasks: {
-          backend: [
-            {
-              title: "Верстка лендинга EasyLearn",
-              description:
-                "Создать современный адаптивный лендинг для школы английского языка с акцентом на легкость восприятия, описание преимуществ и обязательной формой обратной связи.",
-              estimated_hours: 18,
-            },
-          ],
+          backend: [],
           frontend: [
             {
               title: "Верстка лендинга EasyLearn",
@@ -261,9 +254,13 @@ function getCleanDate(date) {
   width: 50%;
   background-color: #42464e;
   border-radius: 2rem;
-  padding: 3rem;
+  padding: 0.5rem 2rem;
   margin: 3rem;
   gap: 2rem;
+}
+.req-id {
+  text-align: right;
+  margin-top: 3rem;
 }
 .container {
   background: #30343b;
@@ -280,6 +277,11 @@ function getCleanDate(date) {
   padding: 1.5rem;
   border-radius: 1rem;
   margin: 2rem;
+}
+.side-container-tasks {
+  background: #2b2f34;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
 }
 .side-container-desc {
   background: #282b30;
@@ -316,16 +318,32 @@ p.with-dot::before {
   font-size: 1em;
 }
 .tasks {
+  width: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 }
-.teams {
+.tasks-index {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  background: #282b30;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 0.3rem;
+  color: #ffff;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.tasks-index h1 {
+  margin: 0;
+  text-align: center;
 }
 .buttons {
   display: flex;
   justify-content: center;
-  margin: 3rem;
+  margin-bottom: 2rem;
 }
 p {
   color: white;
