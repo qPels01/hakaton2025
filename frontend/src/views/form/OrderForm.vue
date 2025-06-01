@@ -26,7 +26,7 @@
     </select>
 
     <div id="checkbox">
-      <input type="checkbox" v-model="chooseForMe" />
+      <input type="checkbox" v-mo  del="chooseForMe" />
       <p id="checkbox-font">Я не знаю. Выберите всё за меня</p>
     </div>
 
@@ -48,9 +48,29 @@
     </div>
     <input type="text" v-model="contactInfo" />
 
-    <div class="buttons">
-      <button @click="toUser" id="denied">Отмена</button>
-      <button>Отправить</button>
+<div class="buttons">
+      <button 
+        @click="toUser" 
+        id="denied" 
+        type="button"
+        :disabled="isLoading"
+      >Отмена</button>
+      <button 
+        :disabled="isLoading"
+        type="submit"
+      >
+        <span v-if="isLoading">
+          <span class="loader"></span> Отправка...
+        </span>
+        <span v-else>
+          Отправить
+        </span>
+      </button>
+    </div>
+    <!-- Спиннер на всю форму -->
+    <div v-if="isLoading" class="form-loader">
+      <div class="big-loader"></div>
+      <div class="loading-text">Загрузка...</div>
     </div>
   </form>
 </template>
@@ -61,6 +81,7 @@ export default {
   name: "order",
   data() {
     return {
+      isLoading: false,
       dropdownProjectType: [
         "Сайт",
         "Одностраничный сайт (лендинг)",
@@ -68,15 +89,16 @@ export default {
         "Интернет-магазин",
         "Внутренний корпоративный портал",
         "Панель администратора",
-        "Искусственный интеллект ",
+        "Искусственный интеллект",
         "API (сервис для взаимодействия)",
-        "Доработка  существующего продукта",
+        "Доработка существующего продукта",
         "Верстка",
         "Чат-бот",
         "Парсер",
-        "Игра",
+        "Игра"
       ],
       dropdawnBackend: [
+        "...",
         "Php (рекомендуется)",
         "Python",
         "Node.js",
@@ -88,8 +110,10 @@ export default {
         "C#",
         "Без бекенда",
       ],
-      dropdawnDB: ["SQL", "Firebase", "MongoDB", "Redis", "Без базы данных"],
+      dropdawnDB: [
+        "...","SQL", "Firebase", "MongoDB", "Redis", "Без базы данных"],
       dropdawnFrontEnd: [
+        "...",
         "Html + css + javaScript",
         "Vue",
         "React",
@@ -99,10 +123,10 @@ export default {
         "Flatter",
       ],
 
-      selected1: "",
-      selected2: "",
-      selected3: "",
-      selected4: "",
+      selected1: "...",
+      selected2: "...",
+      selected3: "...",
+      selected4: "...",
       projectDescription: "",
       chooseForMe: false,
       deadline: "",
@@ -111,9 +135,8 @@ export default {
     };
   },
   methods: {
-    async submitForm(evt) {
-      // evt.preventDefault(); // НЕ нужно, если стоит @submit.prevent в шаблоне
-
+async submitForm(evt) {
+      this.isLoading = true;
       const data = {
         title: this.selected1,
         projectType: this.selected1,
@@ -128,25 +151,66 @@ export default {
         importantDetails: this.importantDetails,
         contactInfo: this.contactInfo,
       };
-
-      // Выводим собранные значения в консоль
-      console.log(JSON.stringify(data, null, 2));
-
-      // Можно отправлять запрос:
       try {
-      console.log("Отправка заявки... ожидание..");
         const response = await api.post("/process", data);
-        console.log(response.data);
+        localStorage.setItem('lastRequisition', JSON.stringify(response.data));
+        this.$router.push({ name: "requisition" });
       } catch (e) {
         console.error(e);
+      } finally {
+        this.isLoading = false;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
+
 <style scoped>
+.buttons .loader {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+.form-loader {
+  /* затемнение + центр лоадера */
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(36, 38, 49, 0.9);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 1.25rem;
+}
+.big-loader {
+  border: 5px solid #e3e3e3;
+  border-top: 5px solid #3fa9f5;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+  animation: spin 1s linear infinite;
+}
+.loading-text {
+  color: #fff;
+  font-size: 1.4rem;
+  text-align: center;
+}
 form {
+  position: relative; /* для form-loader */
+
   display: flex;
   flex-direction: column;
   margin: 2rem auto;

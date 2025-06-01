@@ -6,7 +6,7 @@ import User from "@/views/User.vue";
 import OrderForm from "@/views/form/OrderForm.vue";
 import TeamLog from "@/views/TeamLog.vue";
 import DevList from "@/views/DevList.vue";
-import Requestions2 from "@/views/form/Requestions.vue";
+import Requestions from "@/views/form/Requestions.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,23 +36,23 @@ const router = createRouter({
       name: "order",
       component: OrderForm,
     },
-{
-  path: "/teams/:id",
-  name: "teamLog",
-  component: TeamLog,
-  props: true,
-},
     {
-      path: "/requisition2",
-      name: "requisition2",
-      component: Requestions2,
+      path: "/teams/:id",
+      name: "teamLog",
+      component: TeamLog,
+      props: true,
+    },
+    {
+      path: "/requisition",
+      name: "requisition",
+      component: Requestions,
     },
     {
       path: "/devlist",
       name: "devlist",
       component: DevList,
     },
-  ],
+  ]
 });
 
 export default router;
