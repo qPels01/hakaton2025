@@ -8,6 +8,7 @@ import TeamLog from "@/views/TeamLog.vue";
 import Requisition from "@/views/form/Requisition.vue";
 import DevList from "@/views/DevList.vue";
 import CalculetedJob from "@/views/form/CalculetedJob.vue";
+import Requestions2 from "@/views/form/Requestions2.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,11 @@ const router = createRouter({
       path: "/requisition",
       name: "requisition",
       component: Requisition,
+    },
+    {
+      path: "/requisition2",
+      name: "requisition2",
+      component: Requestions2,
     },
     {
       path: "/devlist",

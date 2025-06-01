@@ -122,7 +122,7 @@ export default {
   border-radius: 2rem;
   padding: 3rem;
   margin: 3rem;
-  gap: 2h1rem;
+  gap: 2rem;
 }
 .page-title {
   border-bottom: 0.1rem solid #969595;
