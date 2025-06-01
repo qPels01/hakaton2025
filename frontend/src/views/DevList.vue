@@ -8,95 +8,64 @@
     </div>
     <select v-model="filterTeam">
       <option :value="null">Все команды</option>
-      <option v-for="n in [1, 2]" :key="n" :value="n">Команда {{ n }}</option>
+      <option
+        v-for="teamId in uniqueTeamIds"
+        :key="teamId"
+        :value="teamId"
+      >
+        Команда {{ teamId }}
+      </option>
     </select>
     <ul class="card-list">
-      <li v-for="item in filteredTeams" :key="item.id" class="card">
-        <span>Имя: {{ item.name }}</span>
-        <span>{{ item.role }}</span>
-        <span>Стек: {{ item.stack }}</span>
-        <span>Команда {{ item.team }}</span>
+      <li v-for="dev in filteredTeams" :key="dev.id" class="card">
+        <span>Имя: {{ dev.name }}</span>
+        <span>Роль: {{ dev.role }}</span>
+        <span>Стек: {{ dev.skills ? dev.skills.join(', ') : '' }}</span>
+        <span>Уровень: {{ dev.level }}</span>
+        <span>Ставка: {{ dev.hourly_rate_rub || '-' }}</span>
+        <span>
+          Команда {{ dev.team ? dev.team.id : '—' }}
+        </span>
       </li>
     </ul>
+    <div v-if="error" style="color:red">{{ error }}</div>
   </div>
 </template>
 
 <script>
+import api from "@/api/axios";
+
 export default {
   name: "devList",
   data() {
     return {
       filterTeam: null,
-      teams: [
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Анна Иванова",
-          team: 1,
-          role: "frontend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Сергей Петров",
-          team: 1,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Мария Кузнецова",
-          team: 1,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Дмитрий Сидоров",
-          team: 1,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          team: 1,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          team: 1,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          team: 2,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          team: 2,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          team: 2,
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          team: 2,
-          role: "backend",
-        },
-      ],
+      devs: [],
+      error: null,
     };
   },
   computed: {
-    filteredTeams() {
-      return this.filterTeam
-        ? this.teams.filter((t) => t.team == this.filterTeam)
-        : this.teams;
+    uniqueTeamIds() {
+      // Собираем уникальные team.id для фильтра
+      const ids = this.devs
+        .map(dev => dev.team?.id)
+        .filter(id => id != null);
+      return [...new Set(ids)];
     },
+    filteredTeams() {
+      if (!this.devs.length) return [];
+      return this.filterTeam
+        ? this.devs.filter(dev => dev.team && dev.team.id == this.filterTeam)
+        : this.devs;
+    },
+  },
+  async mounted() {
+    try {
+      const res = await api.get("/developers");
+      this.devs = res.data;
+    } catch (e) {
+      this.error = "Ошибка загрузки разработчиков";
+    }
   },
   methods: {
     toUser() {

@@ -10,9 +10,12 @@
             </div>
           </div>
           <div v-for="team in teams" :key="team.name" class="gantt-row">
-            <div @click="showModal = true" class="name-cell">
-              {{ team.name }}
-            </div>
+<div 
+  @click="goToTeams(team.id)" 
+  class="name-cell"
+>
+  {{ team.name }}
+</div>
             <div class="row-content">
               <div
                 @click="showModal = true"
@@ -52,6 +55,7 @@ export default {
       showModal: false,
       rawTeams: [
         {
+          id: 1,
           name: "Команда 1",
           tasks: [
             {
@@ -63,6 +67,7 @@ export default {
           ],
         },
         {
+          id: 4,
           name: "Команда 4",
           tasks: [
             {
@@ -74,6 +79,7 @@ export default {
           ],
         },
         {
+          id: 2,
           name: "Команда 2",
           tasks: [
             {
@@ -102,23 +108,24 @@ export default {
       return genDays(min, max);
     },
     teams() {
-      return this.rawTeams.map((team) => ({
-        name: team.name,
-        tasks: team.tasks
-          .map((task) => {
-            const formatDate = (d) => d.slice(0, 10);
-            const start = this.allDates.indexOf(formatDate(task.start_date));
-            const end = this.allDates.indexOf(formatDate(task.end_date));
-            if (start === -1 || end === -1) return null;
-            return {
-              ...task,
-              start,
-              duration: end - start + 1,
-            };
-          })
-          .filter(Boolean),
-      }));
-    },
+  return this.rawTeams.map((team) => ({
+    id: team.id,                      // <-- вот эта строка!
+    name: team.name,
+    tasks: team.tasks
+      .map((task) => {
+        const formatDate = (d) => d.slice(0, 10);
+        const start = this.allDates.indexOf(formatDate(task.start_date));
+        const end = this.allDates.indexOf(formatDate(task.end_date));
+        if (start === -1 || end === -1) return null;
+        return {
+          ...task,
+          start,
+          duration: end - start + 1,
+        };
+      })
+      .filter(Boolean),
+  }));
+}
   },
   methods: {
     getTaskStyle(task) {
@@ -128,9 +135,9 @@ export default {
         background: task.color,
       };
     },
-    goToTeams() {
-      this.$router.push("/teams");
-    },
+  goToTeams(id) {
+    this.$router.push(`/teams/${id}`);
+  },
   },
 };
 </script>

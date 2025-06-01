@@ -1,0 +1,401 @@
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\.env ====
+
+PORT=5001
+NEURO_ENDPOINT=http://5.104.75.180:4000/api/chat
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\app.ts ====
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import cors from 'cors'; // Добавить импорт CORS
+
+import workflowRoutes from './routes/workflow.routes';
+import { errorHandler } from './middlewares/error.middleware';
+
+const app = express();
+app.use(express.json());
+
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+app.use('/api', workflowRoutes);
+
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`API server started at port ${PORT}`);
+});
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\config\prompts.ts ====
+
+import fs from 'fs';
+import path from 'path';
+
+export enum PromptStage {
+  STAGE1 = 'stage1',
+  STAGE2 = 'stage2',
+  REVIEW = 'review',
+}
+
+const cache: Partial<Record<PromptStage, string>> = {};
+
+export async function getPromptAsync(stage: PromptStage): Promise<string> {
+  if (cache[stage]) {
+    return cache[stage] as string;
+  }
+
+  const promptsDir = path.resolve(__dirname, '../prompts');
+  const filePath = path.join(promptsDir, `${stage}.txt`);
+  try {
+    const text = await fs.promises.readFile(filePath, 'utf-8');
+    cache[stage] = text;
+    return text;
+  } catch (err) {
+    throw new Error(`Prompt file not found: ${filePath}`);
+  }
+}
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\controllers\workflow.controller.ts ====
+
+import { Request, Response, NextFunction } from 'express';
+import { callNeuralApiStage1, callNeuralApiStage2, callNeuralApiReview } from '../services/neuralApi.service';
+import { internalAlgorithm } from '../services/internalAlgo.service';
+import { getAllDevelopers } from '../services/developer.service';
+
+export const processData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+const input = req.body;
+let inputString: string;
+try {
+    inputString = JSON.stringify(input);
+} catch(err) {
+    return next(new Error(`Ошибка при сериализации JSON: ${err}`));
+}
+
+
+    const neuralStage1 = await callNeuralApiStage1(inputString) as string;
+    const neuralStage2 = await callNeuralApiStage2(neuralStage1);
+    
+    
+    await res.status(200).json(neuralStage2);
+    // // 2. Ещё один запрос к нейронке (этап 2), используя данные из 1 этапа
+    // const neuralStage2 = await callNeuralApiStage2(neuralStage1);
+
+    // // 3. Ваш алгоритм, получает данные из второго этапа
+    // const algoResult = internalAlgorithm(neuralStage2);
+
+    // // 4. Финальный запрос к нейронке (ревью этап)
+    // const finalReview = await callNeuralApiReview({
+    //   ...neuralStage2,
+    //   algoResult,
+    // });
+
+    // res.json({
+    //   stage1: neuralStage1,
+    //   stage2: neuralStage2,
+    //   algo: algoResult,
+    //   review: finalReview,
+    // });
+  } catch (err) {
+    next(err);
+  }
+};
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\data\developers.json ====
+
+[
+{
+"developers": [
+{
+"name": "Alexey Smirnov",
+"level": "senior",
+"hourly_rate_rub": 3300,
+"skills": ["python", "flask", "aws"]
+},
+{
+"name": "Elena Popova",
+"level": "middle",
+"hourly_rate_rub": 2100,
+"skills": ["java", "spring", "sql"]
+},
+{
+"name": "Roman Yudin",
+"level": "junior",
+"hourly_rate_rub": 1200,
+"skills": ["html", "css", "javascript"]
+},
+{
+"name": "Mariya Sergeeva",
+"level": "middle",
+"hourly_rate_rub": 1800,
+"skills": ["typescript", "angular", "nodejs"]
+},
+{
+"name": "Dmitry Volkov",
+"level": "senior",
+"hourly_rate_rub": 3100,
+"skills": ["go", "kubernetes", "docker", "grafana"]
+}
+]
+},
+{
+"developers": [
+{
+"name": "Olga Ivanova",
+"level": "junior",
+"hourly_rate_rub": 1100,
+"skills": ["php", "wordpress"]
+},
+{
+"name": "Sergey Morozov",
+"level": "middle",
+"hourly_rate_rub": 2200,
+"skills": ["c#", ".net", "azure"]
+},
+{
+"name": "Viktor Naumov",
+"level": "senior",
+"hourly_rate_rub": 2950,
+"skills": ["javascript", "vue", "nodejs"]
+}
+]
+},
+{
+"developers": [
+{
+"name": "Ekaterina Lebedeva",
+"level": "middle",
+"hourly_rate_rub": 1900,
+"skills": ["python", "django", "postgresql"]
+},
+{
+"name": "Pavel Orlov",
+"level": "senior",
+"hourly_rate_rub": 3400,
+"skills": ["scala", "akka", "kafka"]
+},
+{
+"name": "Tatiana Zaitseva",
+"level": "middle",
+"hourly_rate_rub": 2000,
+"skills": ["javascript", "react", "redux"]
+},
+{
+"name": "Maksim Egorov",
+"level": "junior",
+"hourly_rate_rub": 1300,
+"skills": ["html", "css"]
+},
+{
+"name": "Kirill Ignatov",
+"level": "middle",
+"hourly_rate_rub": 2150,
+"skills": ["ruby", "rails", "graphql"]
+},
+{
+"name": "Nikita Kozlov",
+"level": "senior",
+"hourly_rate_rub": 3200,
+"skills": ["go", "grpc", "docker"]
+},
+{
+"name": "Lev Safonov",
+"level": "junior",
+"hourly_rate_rub": 1250,
+"skills": ["java", "spring"]
+}
+]
+},
+{
+"developers": [
+{
+"name": "Alina Petrova",
+"level": "middle",
+"hourly_rate_rub": 2050,
+"skills": ["c++", "qt", "linux"]
+},
+{
+"name": "Ivan Fedorov",
+"level": "senior",
+"hourly_rate_rub": 3150,
+"skills": ["python", "fastapi", "postgresql", "docker", "kubernetes"]
+},
+{
+"name": "Svetlana Suslova",
+"level": "junior",
+"hourly_rate_rub": 1350,
+"skills": ["php", "laravel"]
+},
+{
+"name": "Anton Mikhailov",
+"level": "junior",
+"hourly_rate_rub": 1250,
+"skills": ["html", "css", "javascript"]
+}
+]
+},
+{
+"developers": [
+{
+"name": "Vera Demidova",
+"level": "senior",
+"hourly_rate_rub": 3350,
+"skills": ["c#", "azure", "microservices"]
+},
+{
+"name": "Egor Grigorev",
+"level": "junior",
+"hourly_rate_rub": 1200,
+"skills": ["python", "flask"]
+},
+{
+"name": "Irina Vasilieva",
+"level": "middle",
+"hourly_rate_rub": 2000,
+"skills": ["javascript", "nodejs", "express"]
+},
+{
+"name": "Sergey Polyakov",
+"level": "junior",
+"hourly_rate_rub": 1100,
+"skills": ["bash", "linux"]
+},
+{
+"name": "Valentina Spiridonova",
+"level": "middle",
+"hourly_rate_rub": 1750,
+"skills": ["php", "symfony", "mysql"]
+},
+{
+"name": "Andrey Zhilin",
+"level": "senior",
+"hourly_rate_rub": 3200,
+"skills": ["java", "spring", "kafka", "postgresql"]
+},
+{
+"name": "Arkady Smolin",
+"level": "middle",
+"hourly_rate_rub": 1900,
+"skills": ["ruby", "sinatra", "redis"]
+},
+{
+"name": "Oksana Panina",
+"level": "senior",
+"hourly_rate_rub": 3080,
+"skills": ["typescript", "react", "nestjs", "graphql"]
+},
+{
+"name": "Nina Andreeva",
+"level": "junior",
+"hourly_rate_rub": 1250,
+"skills": ["html", "css"]
+},
+{
+"name": "Vadim Korotkov",
+"level": "middle",
+"hourly_rate_rub": 2100,
+"skills": ["go", "docker", "prometheus"]
+}
+]
+}
+]
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\middlewares\error.middleware.ts ====
+
+import { Request, Response, NextFunction } from 'express';
+
+export function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
+  console.error(err);
+  res.status(500).json({ error: err.message || 'Internal Server Error' });
+}
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\routes\workflow.routes.ts ====
+
+import { Router } from 'express';
+import { processData } from '../controllers/workflow.controller';
+
+const router = Router();
+
+router.post('/process', processData);
+
+export default router;
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\services\developer.service.ts ====
+
+import fs from 'fs';
+import path from 'path';
+
+const dbFile = path.resolve(__dirname, '../data/developers.json');
+
+export async function getAllDevelopers() {
+    const content = await fs.promises.readFile(dbFile, 'utf-8');
+    const groups = JSON.parse(content);
+    return groups.flatMap((g: any) => g.developers);
+}
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\services\internalAlgo.service.ts ====
+
+export function internalAlgorithm(stage2Result: any) {
+  if (!stage2Result || !stage2Result.value) return { score: 0 };
+  return { score: stage2Result.value * 2 };
+}
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\services\neuralApi.service.ts ====
+
+import axios from 'axios';
+import { NeuralApiRequestPayload } from '../types/neuralApi.types';
+import { getPromptAsync, PromptStage } from '../config/prompts';
+
+const endpoint = process.env.NEURO_ENDPOINT as string;
+
+if (!endpoint) {
+  throw new Error('NEURO_ENDPOINT environment variable not set');
+}
+
+export async function callNeuralApi(systemPrompt: string, userMessage: string): Promise<any> {
+  const payload: NeuralApiRequestPayload = {
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userMessage }
+    ]
+  };
+  const response = await axios.post(endpoint, payload);
+  if (!response.data) throw new Error('Neural API error');
+  return response.data;
+}
+
+
+export async function callNeuralApiStage1(input: string) {
+  const prompt = await getPromptAsync(PromptStage.STAGE1);
+  return await callNeuralApi(prompt, input);
+}
+
+export async function callNeuralApiStage2(input: any) {
+    const prompt = await getPromptAsync(PromptStage.STAGE2);
+  return await callNeuralApi(prompt, input);
+}
+
+export async function callNeuralApiReview(input: any) {
+      const prompt = await getPromptAsync(PromptStage.REVIEW);
+  return await callNeuralApi(prompt, input);
+}
+
+==== Файл: D:\Projects\vscode\hakaton2025\backend\project-api\src\types\neuralApi.types.ts ====
+
+// types/neuralApi.types.ts
+export interface NeuralApiMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+export interface NeuralApiRequestPayload {
+  messages: NeuralApiMessage[];
+}

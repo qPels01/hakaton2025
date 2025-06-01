@@ -7,7 +7,6 @@ import OrderForm from "@/views/form/OrderForm.vue";
 import TeamLog from "@/views/TeamLog.vue";
 import DevList from "@/views/DevList.vue";
 import Requestions from "@/views/form/Requestions.vue";
-import BidList from "@/views/BidList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,13 +37,14 @@ const router = createRouter({
       component: OrderForm,
     },
     {
-      path: "/teams",
-      name: "teams",
+      path: "/teams/:id",
+      name: "teamLog",
       component: TeamLog,
+      props: true,
     },
     {
-      path: "/Requestions",
-      name: "Requestions",
+      path: "/requisition",
+      name: "requisition",
       component: Requestions,
     },
     {
@@ -52,12 +52,7 @@ const router = createRouter({
       name: "devlist",
       component: DevList,
     },
-    {
-      path: "/bidlist",
-      name: "bidlist",
-      component: BidList,
-    },
-  ],
+  ]
 });
 
 export default router;
