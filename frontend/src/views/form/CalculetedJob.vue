@@ -72,6 +72,28 @@ li {
   align-items: center;
   justify-content: space-between;
 }
+.card-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 70rem;
+  width: 100%;
+  gap: 3rem;
+  margin: 0;
+  padding: 0;
+}
+.card {
+  background: #282b30;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  gap: 5rem;
+}
+span {
+  color: white;
+  font-size: 1.25rem;
+}
 h1 {
   font-size: 1.25rem;
 }
