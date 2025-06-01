@@ -23,13 +23,21 @@ export default {
       }
       this.error = "";
       try {
-        await api.post("/auth/register", {
-          username: this.username,
-          email: this.email,
-          company_name: this.company_name,
-          password: this.password,
-        });
-        this.message = "Успешно! Теперь войдите.";
+        const res = await api.post("/auth/register", {
+      username: this.username,
+      email: this.email,
+      company_name: this.company_name,
+      password: this.password,
+    });
+
+    // Теперь можете обращаться к res.data.token
+    if (res.data.token) {
+      localStorage.setItem("jwt_token", res.data.token);
+      window.dispatchEvent(new Event('storage'));
+      this.$router.push("/user");
+    } else {
+      this.message = "Успешно! Теперь войдите.";
+    }
       } catch (err) {
         this.error =
           err.response?.data?.message ||
@@ -46,11 +54,23 @@ export default {
 
       <div class="field">
         <label>Имя пользователя</label>
-        <input type="text" required v-model="username" />
+        <input
+          type="text"
+          required
+          v-model="username"
+          name="username"
+          autocomplete="username"
+        />
       </div>
       <div class="field">
         <label>Email</label>
-        <input type="text" required v-model="email" />
+                <input
+          type="email"
+          required
+          v-model="email"
+          name="email"
+          autocomplete="email"
+        />
       </div>
       <div class="field">
         <label>Название организации</label>
@@ -58,11 +78,23 @@ export default {
       </div>
       <div class="field">
         <label>Пароль</label>
-        <input type="password" required v-model="password" />
+                <input
+          type="password"
+          required
+          v-model="password"
+          name="password"
+          autocomplete="current-password"
+        />
       </div>
       <div class="field">
         <label>Подтвердить пароль</label>
-        <input type="password" required v-model="password2" />
+               <input
+          type="password"
+          required
+          v-model="password2"
+          name="confirm_password"
+          autocomplete="new-password"
+        />
       </div>
       <div v-if="error" style="color: red">{{ error }}</div>
       <div v-if="message" style="color: green">{{ message }}</div>

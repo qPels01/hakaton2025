@@ -1,32 +1,39 @@
 <template>
-  <div class="user-info">
-    <h1>Имя пользователя: Иван Иванов Иванович</h1>
+  <div class="user-info" v-if="userInfo">
+    <h1>Имя пользователя: {{ userInfo.username }}</h1>
   </div>
-  <div class="admin-panel">
-    <button class="admin-button" v-if="isManager">Посмотреть заявки</button>
-    <button @click="toDevList" class="admin-button" v-if="isManager">
+  <div class="admin-panel" v-if="userInfo && isManager">
+    <button class="admin-button">Посмотреть заявки</button>
+    <button @click="toDevList" class="admin-button">
       Список разработчиков
     </button>
-    <button @click="toOrderForm">Cделать заказ</button>
   </div>
-  <Diagramm />
+  <button @click="toOrderForm" v-if="userInfo && !isManager" class="admin-button">
+    Cделать заказ
+  </button>
+  <Diagramm v-if="userInfo" />
   <div class="logout">
-    <button>Выйти</button>
+    <button @click="logout" v-if="userInfo">Выйти</button>
   </div>
 </template>
 
 <script>
 import Diagramm from "@/components/Diagramm.vue";
+import api from "@/api/axios";
 
 export default {
   name: "user",
-  components: {
-    Diagramm,
-  },
+  components: { Diagramm },
   data() {
     return {
-      isManager: true,
+      userInfo: null,
+      error: "",
+      isManager: true
     };
+  },  computed: {
+    isManager() {
+      return this.userInfo && this.userInfo.role !== 'manager';
+    }
   },
   methods: {
     toOrderForm() {
@@ -34,8 +41,24 @@ export default {
     },
     toDevList() {
       this.$router.push("/devlist");
-    },
-  },
+    },    logout() {
+      localStorage.removeItem('jwt_token');
+      window.dispatchEvent(new Event('storage'));
+      this.$router.push('/login');
+    }
+  },async mounted() {
+    try {
+      const res = await api.get("/user/protected"); // предполагается, что этот роут возвращает { user: { username, email, ... } }
+      this.userInfo = res.data.user;
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        localStorage.removeItem("jwt_token");
+        this.$router.push("/login");
+      } else {
+        this.error = "Ошибка получения данных пользователя";
+      }
+    }
+  }
 };
 </script>
 

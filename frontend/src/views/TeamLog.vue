@@ -1,59 +1,42 @@
 <template>
   <div class="main-container">
-    <div class="head-component">
-      <h1>Список разработчиков</h1>
-    </div>
-    <ul class="card-list">
-      <li v-for="item in teams" :key="item.id" class="card">
-        <span>Имя: {{ item.name }}</span>
-        <span>{{ item.role }}</span>
-        <span>Стек: {{ item.stack }}</span>
-        <span>Команда 1</span>
-        <!-- <button class="teamer-btn">подробнее</button> -->
+    <h1>Разработчики команды №{{ teamId }}</h1>
+    <ul v-if="developers.length" class="card-list">
+      <li v-for="dev in developers" :key="dev.id" class="card">
+        <div><span class="label">Имя:</span> {{ dev.name }}</div>
+        <div><span class="label">Роль:</span> {{ dev.role }}</div>
+        <div><span class="label">Стек:</span> {{ dev.skills?.join(', ') }}</div>
+        <div><span class="label">Уровень:</span> {{ dev.level }}</div>
+        <div><span class="label">Ставка:</span> {{ dev.hourly_rate_rub }}</div>
       </li>
     </ul>
-    <!-- <button>Добавить разработчика</button> -->
+    <div v-else>
+      Нет разработчиков для этой команды
+    </div>
+    <div v-if="error" style="color: red">{{ error }}</div>
   </div>
 </template>
 
 <script>
+import api from '@/api/axios';
+
 export default {
-  name: "teamLOg",
+  name: 'TeamPage',
   data() {
     return {
-      teams: [
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Анна Иванова",
-          email: "anna.ivanova@example.com",
-          role: "frontend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Сергей Петров",
-          email: "sergey.petrov@example.com",
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Мария Кузнецова",
-          email: "maria.kuznetsova@example.com",
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Дмитрий Сидоров",
-          email: "dmitry.sidorov@example.com",
-          role: "backend",
-        },
-        {
-          stack: "React, Node.js, MongoDB Vue.js",
-          name: "Елена Павлова",
-          email: "elena.pavlova@example.com",
-          role: "backend",
-        },
-      ],
+      teamId: null,
+      developers: [],
+      error: null,
     };
+  },
+  async mounted() {
+    this.teamId = Number(this.$route.params.id);
+    try {
+      const res = await api.get(`/teams/${this.teamId}`);
+      this.developers = res.data.developers || [];
+    } catch (e) {
+      this.error = 'Ошибка загрузки';
+    }
   },
 };
 </script>
