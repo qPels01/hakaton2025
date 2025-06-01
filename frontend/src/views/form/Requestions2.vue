@@ -1,106 +1,127 @@
 <template>
   <div class="main-container">
     <div class="project-container">
-      <h1 class="page-title">Просмотр заявки</h1>
-      <ul>
-        <li>
-          <label class="subtitle" id="project">Заказчик</label>
-          <label class="label">{{ client.name }}</label>
-        </li>
-        <li>
-          <label class="subtitle" id="project">Дата подачи заявки</label>
-          <label class="label">{{ cleanCreated_at }}</label>
-        </li>
-        <li>
-          <label class="subtitle" id="project">Контактные данные</label>
-          <label class="label">{{ query.contactInfo }}</label>
-        </li>
-      </ul>
+      <h1 id="title">Просмотр заявки</h1>
 
-      <h1>{{ query.title }}</h1>
-      <label> {{ query.projectDescription }} </label>
-      <ul>
-        <li>
-          <label class="subtitle" id="project">Бекенд</label>
-          <label class="label">{{ tasks.chosenStack.backend }}</label>
-        </li>
-        <li>
-          <label class="subtitle" id="project">Фронтенд</label>
-          <label class="label">{{ tasks.chosenStack.frontend }}</label>
-        </li>
-        <li>
-          <label class="subtitle" id="project">База данных</label>
-          <label class="label">{{ tasks.chosenStack.database }}</label>
-        </li>
-      </ul>
-      <div>
-        <label class="subtitle">Дедлайн: </label>
-        <label class="label">{{ query.deadline }}</label>
+      <div class="container">
+        <ul>
+          <li>
+            <h1>Заказчик</h1>
+            <p>{{ client.name }}</p>
+          </li>
+          <li>
+            <h1>Дата подачи заявки</h1>
+            <p>{{ cleanCreated_at }}</p>
+          </li>
+          <li>
+            <h1>Контактные данные</h1>
+            <p>{{ query.contactInfo }}</p>
+          </li>
+        </ul>
       </div>
-      <label class="subtitle">Дополнительные пожелания:</label>
-      <label class="label">{{ query.importantDetails }}</label>
-      <h1 class="page-title">Рассчитанные трудозатраты</h1>
-      <ul>
-        <li>
-          <label class="subtitle" id="project">Время на разработку</label>
-          <label class="label">{{
-            tasks.total_estimated_time.toString() + " дней"
-          }}</label>
-        </li>
-        <li>
-          <label class="subtitle" id="project">Часов разработки</label>
-          <label class="label">{{
-            tasks.total_estimated_time.toString() + " ч"
-          }}</label>
-        </li>
-        <li>
-          <label class="subtitle" id="project">Общая стоимость</label>
-          <label class="label">{{ spending.total_cost.toString() + "" }}</label>
-        </li>
-      </ul>
-      <div>
-        <h1 class="page-title subtitle" id="project">
+
+      <div class="container">
+        <h1 id="title">{{ query.title }}</h1>
+        <p class="side-container-desc">{{ query.projectDescription }}</p>
+        <ul>
+          <li>
+            <h1 class="subtitle" id="project">Бекенд</h1>
+            <p>{{ tasks.chosenStack.backend }}</p>
+          </li>
+          <li>
+            <h1 class="subtitle" id="project">Фронтенд</h1>
+            <p>{{ tasks.chosenStack.frontend }}</p>
+          </li>
+          <li>
+            <h1 class="subtitle" id="project">База данных</h1>
+            <p>{{ tasks.chosenStack.database }}</p>
+          </li>
+        </ul>
+
+        <div class="deadline">
+          <h1 class="subtitle">Дедлайн:</h1>
+          <p>{{ query.deadline }}</p>
+        </div>
+
+        <div class="side-container">
+          <h1 class="subtitle">Дополнительные пожелания:</h1>
+          <p>{{ query.importantDetails }}</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <h1 id="title">Рассчитанные трудозатраты</h1>
+        <ul>
+          <li>
+            <h1 class="subtitle" id="project">Время на разработку</h1>
+            <p>
+              {{ tasks.total_estimated_time.toString() + " дней" }}
+            </p>
+          </li>
+          <li>
+            <h1 class="subtitle" id="project">Часов разработки</h1>
+            <p>
+              {{ tasks.total_estimated_time.toString() + " ч" }}
+            </p>
+          </li>
+          <li>
+            <h1 class="subtitle" id="project">Общая стоимость</h1>
+            <p>{{ spending.total_cost.toLocaleString("ru-Ru") }} ₽</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+        <h1 id="subtitle">
           Подобранная команда
           {{ "(Команда " + tasks.chosen_team_id.toString() + "):" }}
         </h1>
+        <div
+          class="dev-side-container"
+          v-for="(dev, index) in developers"
+          :key="index"
+        >
+          <ul class="developers">
+            <li>
+              <div class="about">
+                <h1 class="subtitle noMargin" id="project">{{ dev.name }}</h1>
+                <p class="with-dot">{{ dev.role }}</p>
+                <p class="with-dot">{{ dev.level }}</p>
+                <p class="with-dot">{{ getStack(dev.skills) }}</p>
+              </div>
+            </li>
+            <ul v-for="calc in spending.calculation" :key="calc.id">
+              <li v-if="calc.dev_id == index">
+                <p class="subtitle" id="project">Часов разработки</p>
+                <p>{{ calc.hours }}</p>
+              </li>
+              <li v-if="calc.dev_id == index">
+                <p class="subtitle" id="project">Стоимость работы</p>
+                <p>{{ calc.cost }}</p>
+              </li>
+            </ul>
+          </ul>
+        </div>
       </div>
-      <ul class="developers" v-for="(dev, index) in developers">
-        <li>
-          <div class="about">
-            <label class="subtitle noMargin" id="project">{{ dev.name }}</label>
-            <label class="label">{{ dev.role }}</label>
-            <label class="label">{{ dev.level }}</label>
-            <label class="label">{{ getStack(dev.skills) }}</label>
-          </div>
-        </li>
-        <ul v-for="calc in spending.calculation">
-          <li v-if="calc.dev_id == index">
-            <label class="subtitle" id="project">Часов разработки</label>
-            <label class="label">{{ calc.hours }} </label>
-          </li>
-          <li v-if="calc.dev_id == index">
-            <label class="subtitle" id="project">Стоимость работы</label>
-            <label class="label">{{ calc.cost }} </label>
-          </li>
-        </ul>
-      </ul>
-      <ul>
-        <h1 class="page-title subtitle" id="project">Задачи</h1>
-        <li v-for="(task, index) in tasks.tasks">
+
+      <div class="container">
+        <h1 id="subtitle">Задачи</h1>
+        <li v-for="(task, index) in tasks.tasks" class="tasks">
           <ul>
-            <label class="label subtitle">{{ index }}</label>
+            <p>{{ index }}</p>
             <li v-for="rtask in task">
-              <label class="label subtitle">{{ rtask.title }}</label>
+              <p class="label subtitle">{{ rtask.title }}</p>
               <br />
-              <label class="label">{{ rtask.description }}</label>
+              <p>{{ rtask.description }}</p>
               <br />
-              <label class="label">{{
-                "Рассчитанное время: " + rtask.estimated_hours + "ч"
-              }}</label>
+              <p>
+                {{ "Рассчитанное время: " + rtask.estimated_hours + "ч" }}
+              </p>
             </li>
           </ul>
         </li>
-      </ul>
+      </div>
+
       <button id="accept">Подтвердить выбор ИИ</button>
       <button id="recalc">Перерасчитать</button>
     </div>
@@ -157,7 +178,14 @@ export default {
           database: "-",
         },
         tasks: {
-          backend: [],
+          backend: [
+            {
+              title: "Верстка лендинга EasyLearn",
+              description:
+                "Создать современный адаптивный лендинг для школы английского языка с акцентом на легкость восприятия, описание преимуществ и обязательной формой обратной связи.",
+              estimated_hours: 18,
+            },
+          ],
           frontend: [
             {
               title: "Верстка лендинга EasyLearn",
@@ -237,35 +265,90 @@ function getCleanDate(date) {
   margin: 3rem;
   gap: 2rem;
 }
-.about {
+.container {
+  background: #30343b;
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+.side-container {
+  background: #282b30;
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+.dev-side-container {
+  background: #282b30;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin: 2rem;
+}
+.side-container-desc {
+  background: #282b30;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+#title {
+  border-bottom: 0.1rem solid #969595;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+#subtitle {
+  border-bottom: 0.1rem solid #969595;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  text-align: left;
+}
+.deadline {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  margin: 2rem auto;
+  align-items: center;
+}
+.deadline p {
+  font-size: 1.2rem;
+  letter-spacing: 0.1rem;
+}
+p.with-dot::before {
+  content: "•";
+  color: #fff;
+  margin-right: 0.5em;
+  font-size: 1em;
+}
+.tasks {
+  display: flex;
+}
+.teams {
+  display: flex;
   justify-content: space-between;
 }
-#accept {
-  margin: 0;
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin: 3rem;
+}
+p {
+  color: white;
+  font-size: 1.1rem;
+}
+li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+h1 {
+  font-size: 1.25rem;
 }
 ul {
-  color: white;
+  width: 100%;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 0;
 }
-#project {
-  margin-right: 15px;
-  margin-bottom: 32px;
+#denied {
+  background: rgb(236, 17, 17);
 }
-#recalc {
-  background: #889dc7;
-  margin: 0;
-}
-.subtitle {
-  font-size: 24px;
-  border-bottom: 0;
-}
-.developers {
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 0;
+#denied:hover {
+  background: rgb(202, 17, 17);
 }
 </style>

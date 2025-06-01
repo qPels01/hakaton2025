@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="project-container">
-      <h1 class="page-title" id="title">Просмотр заявки</h1>
+      <h1 id="title">Просмотр заявки</h1>
 
       <div id="customer">
         <ul class="customer-container">

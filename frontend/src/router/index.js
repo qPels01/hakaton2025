@@ -7,7 +7,6 @@ import OrderForm from "@/views/form/OrderForm.vue";
 import TeamLog from "@/views/TeamLog.vue";
 import Requisition from "@/views/form/Requisition.vue";
 import DevList from "@/views/DevList.vue";
-import CalculetedJob from "@/views/form/CalculetedJob.vue";
 import Requestions2 from "@/views/form/Requestions2.vue";
 
 const router = createRouter({
@@ -57,11 +56,6 @@ const router = createRouter({
       path: "/devlist",
       name: "devlist",
       component: DevList,
-    },
-    {
-      path: "/calcjobs",
-      name: "calcjobs",
-      component: CalculetedJob,
     },
   ],
 });
