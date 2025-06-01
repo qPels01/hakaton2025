@@ -77,7 +77,19 @@
       </ul>
     </ul>
     <ul>
-        
+        <h1 class="page-title subtitle" id="project">Задачи</h1>
+        <li v-for="(task, index) in tasks.tasks">
+          <ul>
+            <label class="label subtitle">{{ index }}</label>
+              <li v-for="rtask in task">
+                <label class="label subtitle">{{rtask.title}}</label>
+                <br>
+                <label class="label">{{rtask.description}}</label>
+                <br>
+                <label class="label">{{"Рассчитанное время: " + rtask.estimated_hours + "ч"}}</label>
+              </li>
+            </ul>
+          </li>
     </ul>
     <button id="accept">Подтвердить выбор ИИ</button>
     <button id="recalc">Перерасчитать</button>
@@ -230,6 +242,7 @@ function getCleanDate(date){
   }
   .subtitle{
       font-size: 24px;
+      border-bottom: 0;
   }
   .developers{
     border-bottom: 2px solid #ccc;
