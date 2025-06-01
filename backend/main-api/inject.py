@@ -8,7 +8,7 @@ conn = psycopg2.connect(
     password="123123"
 )
 
-sql_file_path = "schema.sql"
+sql_file_path = "./schema.sql"
 
 try:
     with open(sql_file_path, "r", encoding="utf-8") as f:

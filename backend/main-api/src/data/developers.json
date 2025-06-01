@@ -1,0 +1,196 @@
+[
+{
+"0": [
+{
+"name": "Alexey Smirnov",
+"level": "senior",
+"hourly_rate_rub": 3300,
+"skills": ["python", "flask", "aws"]
+},
+{
+"name": "Elena Popova",
+"level": "middle",
+"hourly_rate_rub": 2100,
+"skills": ["java", "spring", "sql"]
+},
+{
+"name": "Roman Yudin",
+"level": "junior",
+"hourly_rate_rub": 1200,
+"skills": ["html", "css", "javascript"]
+},
+{
+"name": "Mariya Sergeeva",
+"level": "middle",
+"hourly_rate_rub": 1800,
+"skills": ["typescript", "angular", "nodejs"]
+},
+{
+"name": "Dmitry Volkov",
+"level": "senior",
+"hourly_rate_rub": 3100,
+"skills": ["go", "kubernetes", "docker", "grafana"]
+}
+]
+},
+{
+"1": [
+{
+"name": "Olga Ivanova",
+"level": "junior",
+"hourly_rate_rub": 1100,
+"skills": ["php", "wordpress"]
+},
+{
+"name": "Sergey Morozov",
+"level": "middle",
+"hourly_rate_rub": 2200,
+"skills": ["c#", ".net", "azure"]
+},
+{
+"name": "Viktor Naumov",
+"level": "senior",
+"hourly_rate_rub": 2950,
+"skills": ["javascript", "vue", "nodejs"]
+}
+]
+},
+{
+"2": [
+{
+"name": "Ekaterina Lebedeva",
+"level": "middle",
+"hourly_rate_rub": 1900,
+"skills": ["python", "django", "postgresql"]
+},
+{
+"name": "Pavel Orlov",
+"level": "senior",
+"hourly_rate_rub": 3400,
+"skills": ["scala", "akka", "kafka"]
+},
+{
+"name": "Tatiana Zaitseva",
+"level": "middle",
+"hourly_rate_rub": 2000,
+"skills": ["javascript", "react", "redux"]
+},
+{
+"name": "Maksim Egorov",
+"level": "junior",
+"hourly_rate_rub": 1300,
+"skills": ["html", "css"]
+},
+{
+"name": "Kirill Ignatov",
+"level": "middle",
+"hourly_rate_rub": 2150,
+"skills": ["ruby", "rails", "graphql"]
+},
+{
+"name": "Nikita Kozlov",
+"level": "senior",
+"hourly_rate_rub": 3200,
+"skills": ["go", "grpc", "docker"]
+},
+{
+"name": "Lev Safonov",
+"level": "junior",
+"hourly_rate_rub": 1250,
+"skills": ["java", "spring"]
+}
+]
+},
+{
+"3": [
+{
+"name": "Alina Petrova",
+"level": "middle",
+"hourly_rate_rub": 2050,
+"skills": ["c++", "qt", "linux"]
+},
+{
+"name": "Ivan Fedorov",
+"level": "senior",
+"hourly_rate_rub": 3150,
+"skills": ["python", "fastapi", "postgresql", "docker", "kubernetes"]
+},
+{
+"name": "Svetlana Suslova",
+"level": "junior",
+"hourly_rate_rub": 1350,
+"skills": ["php", "laravel"]
+},
+{
+"name": "Anton Mikhailov",
+"level": "junior",
+"hourly_rate_rub": 1250,
+"skills": ["html", "css", "javascript"]
+}
+]
+},
+{
+"4": [
+{
+"name": "Vera Demidova",
+"level": "senior",
+"hourly_rate_rub": 3350,
+"skills": ["c#", "azure", "microservices"]
+},
+{
+"name": "Egor Grigorev",
+"level": "junior",
+"hourly_rate_rub": 1200,
+"skills": ["python", "flask"]
+},
+{
+"name": "Irina Vasilieva",
+"level": "middle",
+"hourly_rate_rub": 2000,
+"skills": ["javascript", "nodejs", "express"]
+},
+{
+"name": "Sergey Polyakov",
+"level": "junior",
+"hourly_rate_rub": 1100,
+"skills": ["bash", "linux"]
+},
+{
+"name": "Valentina Spiridonova",
+"level": "middle",
+"hourly_rate_rub": 1750,
+"skills": ["php", "symfony", "mysql"]
+},
+{
+"name": "Andrey Zhilin",
+"level": "senior",
+"hourly_rate_rub": 3200,
+"skills": ["java", "spring", "kafka", "postgresql"]
+},
+{
+"name": "Arkady Smolin",
+"level": "middle",
+"hourly_rate_rub": 1900,
+"skills": ["ruby", "sinatra", "redis"]
+},
+{
+"name": "Oksana Panina",
+"level": "senior",
+"hourly_rate_rub": 3080,
+"skills": ["typescript", "react", "nestjs", "graphql"]
+},
+{
+"name": "Nina Andreeva",
+"level": "junior",
+"hourly_rate_rub": 1250,
+"skills": ["html", "css"]
+},
+{
+"name": "Vadim Korotkov",
+"level": "middle",
+"hourly_rate_rub": 2100,
+"skills": ["go", "docker", "prometheus"]
+}
+]
+}
+]
