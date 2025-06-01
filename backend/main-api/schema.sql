@@ -1,36 +1,6 @@
--- -- Создание таблицы teams
--- CREATE TABLE teams (
---     id SERIAL PRIMARY KEY
--- );
-
--- -- Создание таблицы developers
--- CREATE TABLE developers (
---     id SERIAL PRIMARY KEY,
---     name VARCHAR(100) NOT NULL,
---     role VARCHAR(50) NOT NULL,
---     level VARCHAR(50) NOT NULL,
---     hourly_rate_rub NUMERIC(10,2) NOT NULL,
---     skills TEXT[] NOT NULL,
---     team_id INTEGER REFERENCES teams(id) ON DELETE SET NULL
--- );
-
--- -- Создание таблицы forms
--- CREATE TABLE forms (
---     id SERIAL PRIMARY KEY,
---     title VARCHAR(200) NOT NULL,
---     team_id INTEGER REFERENCES teams(id) ON DELETE CASCADE,
---     deadline DATE NOT NULL,
---     total_cost NUMERIC(15,2),
---     created_at TIMESTAMP NOT NULL DEFAULT now()
--- );
-
--- -- Создание таблицы tasks
--- CREATE TABLE tasks (
---     id SERIAL PRIMARY KEY,
---     dev_id INTEGER REFERENCES developers(id) ON DELETE CASCADE,
---     form_id INTEGER REFERENCES forms(id) ON DELETE CASCADE,
---     name VARCHAR(200) NOT NULL,
---     hours NUMERIC(7,2) NOT NULL,
---     deadline DATE NOT NULL,
---     is_completed BOOLEAN NOT NULL DEFAULT FALSE
--- );
+DROP TABLE IF EXISTS "developers" CASCADE;
+-- При необходимости также:
+DROP TABLE IF EXISTS "tasks" CASCADE;
+DROP TABLE IF EXISTS "forms" CASCADE;
+DROP TABLE IF EXISTS "teams" CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
