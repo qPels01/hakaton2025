@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
-import cors from 'cors'; // Добавить импорт CORS
+import cors from 'cors';
 
 import workflowRoutes from './routes/workflow.routes';
 import { errorHandler } from './middlewares/error.middleware';
