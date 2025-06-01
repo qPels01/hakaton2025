@@ -5,9 +5,8 @@ import Login from "@/views/auth/Login.vue";
 import User from "@/views/User.vue";
 import OrderForm from "@/views/form/OrderForm.vue";
 import TeamLog from "@/views/TeamLog.vue";
-import Requisition from "@/views/form/Requisition.vue";
 import DevList from "@/views/DevList.vue";
-import Requestions2 from "@/views/form/Requestions2.vue";
+import Requestions2 from "@/views/form/Requestions.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,11 +43,6 @@ const router = createRouter({
   props: true,
 },
     {
-      path: "/requisition",
-      name: "requisition",
-      component: Requisition,
-    },
-    {
       path: "/requisition2",
       name: "requisition2",
       component: Requestions2,
@@ -58,7 +52,6 @@ const router = createRouter({
       name: "devlist",
       component: DevList,
     },
-
   ],
 });
 

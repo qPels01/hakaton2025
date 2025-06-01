@@ -48,7 +48,10 @@
     </div>
     <input type="text" v-model="contactInfo" />
 
-    <button type="submit">Рассчитать</button>
+    <div class="buttons">
+      <button @click="toUser" id="denied">Отмена</button>
+      <button>Отправить</button>
+    </div>
   </form>
 </template>
 
@@ -212,5 +215,16 @@ textarea {
   color: white;
   font-size: 1.2rem;
   padding: 0.5rem 0.75rem;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+#denied {
+  background: rgb(236, 17, 17);
+}
+#denied:hover {
+  background: rgb(202, 17, 17);
 }
 </style>

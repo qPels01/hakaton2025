@@ -18,6 +18,7 @@
 </div>
             <div class="row-content">
               <div
+                @click="openModal"
                 v-for="task in team.tasks"
                 :key="task.name"
                 class="task"
@@ -217,6 +218,7 @@ export default {
   white-space: nowrap;
   box-sizing: border-box;
 }
+
 .gantt-scroll::-webkit-scrollbar {
   height: 8px;
   background: #393b40;
