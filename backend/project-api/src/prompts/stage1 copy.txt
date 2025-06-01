@@ -1,0 +1,173 @@
+Отлично, вот обновлённый промпт, который учитывает, что не обязательно будут все виды задач (например, лэндинг может быть только Frontend). Нейронка должна сама определить необходимые типы задач исходя из projectType, techStack и projectDescription. Формат JSON всегда возвращается одинаковым, даже если какие-то группы задач отсутствуют (их просто не будет в массиве tasks и не будут упоминаться в parallel_tasks/sequential_tasks).
+
+Промпт для нейросети
+Ты получаешь на вход JSON с описанием проекта. На основе входных данных определи, какой набор задач нужен для этого проекта (например, если это простой лэндинг — только фронтенд, бэкенд не нужен). Обычно задачи включают: Backend Development, Frontend Development, QA Testing. Могут добавляться или отсутствовать задачи, если проект не подразумевает их.
+
+Правила:
+
+Формируй только реально необходимые задачи, ничего лишнего!
+Все задачи (backend, frontend, devops и т.д.), которые могут делаться параллельно, указывай в parallel_tasks.
+sequential_tasks — задачи, которые начинаются только после завершения всех параллельных.
+Если какой-то задачи нет — исключи её из всех массивов.
+QA обычно начинается только после завершения всех development-задач.
+Для каждой задачи оцени примерное время выполнения в часах.
+max_parallel_hours — сколько займут самые длинные параллельные задачи.
+sequential_hours — суммарное время по всем задачам из sequential_tasks (например, QA).
+total_estimated_hours — это max_parallel_hours + sequential_hours.
+Всегда возвращай JSON строго по следующей структуре (если какие-то массивы пустые, просто указывай их пустыми):
+
+{
+    "project": {
+        "title": "",
+        "projectType": "",
+        "projectDescription": "",
+        "techStack": {
+            "backend": "",
+            "database": "",
+            "frontend": "",
+            "chooseForMe": false
+        },
+        "deadline": "",
+        "importantDetails": "",
+        "contactInfo": ""
+    },
+    "tasks": [
+        {
+            "name": "",
+            "description": "",
+            "estimated_hours": 0
+        }
+    ],
+    "parallel_tasks": [
+        ["", ""]
+    ],
+    "sequential_tasks": [
+        [""]
+    ],
+    "max_parallel_hours": 0,
+    "sequential_hours": 0,
+    "total_estimated_hours": 0
+}
+Объяснения:
+
+Если нужна только frontend задача, укажи одну задачу: "Frontend Development", опиши её, оцени часы, и укажи её в parallel_tasks. sequential_tasks будет пустой, если не нужен QA.
+Если нужны и backend, и frontend — оба таска указывай в parallel_tasks.
+Если нужен QA — он всегда в sequential_tasks, иначе sequential_tasks пустой.
+Если ни одна задача не нужна (например, ошибка во входных данных), tasks делай пустым.
+max_parallel_hours — самый длительный из параллельных тасков, sequential_hours — сумма по sequential_tasks, total_estimated_hours — их сумма.
+Пример — только Frontend:
+
+{
+    "project": {
+        "title": "Promo Landing",
+        "projectType": "Landing Page",
+        "projectDescription": "A simple promo website for a product.",
+        "techStack": {
+            "backend": "",
+            "database": "",
+            "frontend": "React",
+            "chooseForMe": false
+        },
+        "deadline": "2024-10-01",
+        "importantDetails": "",
+        "contactInfo": "promo@email.com"
+    },
+    "tasks": [
+        {
+            "name": "Frontend Development",
+            "description": "Make responsive landing page, animations, contact form.",
+            "estimated_hours": 16
+        }
+    ],
+    "parallel_tasks": [
+        ["Frontend Development"]
+    ],
+    "sequential_tasks": [],
+    "max_parallel_hours": 16,
+    "sequential_hours": 0,
+    "total_estimated_hours": 16
+}
+Пример — только Frontend и QA:
+
+{
+    "project": {
+        "title": "Promo Landing",
+        "projectType": "Landing Page",
+        "projectDescription": "A simple promo website for a product.",
+        "techStack": {
+            "backend": "",
+            "database": "",
+            "frontend": "React",
+            "chooseForMe": false
+        },
+        "deadline": "2024-10-01",
+        "importantDetails": "",
+        "contactInfo": "promo@email.com"
+    },
+    "tasks": [
+        {
+            "name": "Frontend Development",
+            "description": "Make responsive landing page, animations, contact form.",
+            "estimated_hours": 16
+        },
+        {
+            "name": "QA Testing",
+            "description": "Cross-browser and device testing.",
+            "estimated_hours": 3
+        }
+    ],
+    "parallel_tasks": [
+        ["Frontend Development"]
+    ],
+    "sequential_tasks": [
+        ["QA Testing"]
+    ],
+    "max_parallel_hours": 16,
+    "sequential_hours": 3,
+    "total_estimated_hours": 19
+}
+Пример — полный стек:
+
+{
+    "project": {
+        "title": "Simple CRM",
+        "projectType": "Web application",
+        "projectDescription": "A minimal CRM system to manage clients.",
+        "techStack": {
+            "backend": "Node.js",
+            "database": "PostgreSQL",
+            "frontend": "React",
+            "chooseForMe": false
+        },
+        "deadline": "2024-08-01",
+        "importantDetails": "Login required, simple dashboard.",
+        "contactInfo": "someone@email.com"
+    },
+    "tasks": [
+        {
+            "name": "Backend Development",
+            "description": "Building REST API, authentication, database models.",
+            "estimated_hours": 30
+        },
+        {
+            "name": "Frontend Development",
+            "description": "Creating UI, forms, connecting to API.",
+            "estimated_hours": 25
+        },
+        {
+            "name": "QA Testing",
+            "description": "Testing user flows, bugfixes.",
+            "estimated_hours": 12
+        }
+    ],
+    "parallel_tasks": [
+        ["Backend Development", "Frontend Development"]
+    ],
+    "sequential_tasks": [
+        ["QA Testing"]
+    ],
+    "max_parallel_hours": 30,
+    "sequential_hours": 12,
+    "total_estimated_hours": 42
+}
+Всегда возвращай ответы строго по этой структуре и логике!
